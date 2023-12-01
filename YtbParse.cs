@@ -15,7 +15,8 @@ namespace WinFormsApp1
             {
                 var videoId = YoutubeExplode.Videos.VideoId.Parse(UrlOfVideo);
                 var video = await youtube.Videos.GetAsync(videoId);
-                return Regex.Replace(video.Title, "[^a-zA-Z0-9]+", "", RegexOptions.Compiled);
+                string s =  Regex.Replace(video.Title, "[^a-zA-Z0-9]+", "", RegexOptions.Compiled);
+                return s.Substring(0, Math.Min(s.Length, 200));
             }
             catch
             {

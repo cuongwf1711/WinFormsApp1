@@ -37,7 +37,6 @@
             historyToolStripMenuItem = new ToolStripMenuItem();
             logoutToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1 = new MenuStrip();
-            deleteAccountToolStripMenuItem = new ToolStripMenuItem();
             tabControl1.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -84,7 +83,7 @@
             // 
             // adminToolStripMenuItem
             // 
-            adminToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { infoToolStripMenuItem, historyToolStripMenuItem, logoutToolStripMenuItem, deleteAccountToolStripMenuItem });
+            adminToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { infoToolStripMenuItem, historyToolStripMenuItem, logoutToolStripMenuItem });
             adminToolStripMenuItem.Name = "adminToolStripMenuItem";
             adminToolStripMenuItem.Size = new Size(67, 24);
             adminToolStripMenuItem.Text = "Admin";
@@ -120,13 +119,6 @@
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
-            // deleteAccountToolStripMenuItem
-            // 
-            deleteAccountToolStripMenuItem.Name = "deleteAccountToolStripMenuItem";
-            deleteAccountToolStripMenuItem.Size = new Size(224, 26);
-            deleteAccountToolStripMenuItem.Text = "Delete Account";
-            deleteAccountToolStripMenuItem.Click += deleteAccountToolStripMenuItem_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -157,6 +149,5 @@
         private ToolStripMenuItem historyToolStripMenuItem;
         private ToolStripMenuItem logoutToolStripMenuItem;
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem deleteAccountToolStripMenuItem;
     }
 }

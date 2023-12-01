@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -41,8 +42,12 @@ namespace WinFormsApp1
             if (result == DialogResult.OK)
             {
                 defaultPath = folderDlg.SelectedPath;
-                txtLocalpath.Text = Path.Combine(defaultPath, fileName);
+                UpdateLocalPath();
             }
+        }
+        void UpdateLocalPath()
+        {
+            txtLocalpath.Text = Path.Combine(defaultPath, fileName);
         }
         private void UpdateFileSize(long fileSize)
         {
@@ -63,10 +68,32 @@ namespace WinFormsApp1
         }
         private async void btnDownload_Click(object sender, EventArgs e)
         {
-            if (txtLocalpath.Text == string.Empty || txtURL.Text == string.Empty || File.Exists(txtLocalpath.Text))
+            if (txtLocalpath.Text == string.Empty || txtURL.Text == string.Empty)
             {
                 MessageBox.Show("Error");
                 return;
+            }
+
+            if(File.Exists(txtLocalpath.Text))
+            {
+                DialogResult result = MessageBox.Show("File đã tồn tại, bạn có muốn thêm chỉ số vào không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    string extension = Path.GetExtension(fileName);
+                    string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+
+                    int count = 1;
+                    string newFileName = $"{fileNameWithoutExtension}({count}){extension}";
+
+                    while (File.Exists(Path.Combine(defaultPath, newFileName)))
+                    {
+                        count++;
+                        newFileName = $"{fileNameWithoutExtension}({count}){extension}";
+                    }
+
+                    fileName = newFileName;
+                    UpdateLocalPath();
+                }
             }
             BeginDownload();
             MyDownloadBooster d = new MyDownloadBooster()
@@ -132,7 +159,7 @@ namespace WinFormsApp1
                 return;
             }
             fileName = Path.GetFileName(txtURL.Text);
-            txtLocalpath.Text = Path.Combine(defaultPath, fileName);
+            UpdateLocalPath();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -147,14 +174,14 @@ namespace WinFormsApp1
                 YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
                 txtURL.Text = await ytbParse.GetUrlDownloadMp3();
                 fileName = await ytbParse.GetName() + ".mp3";
-                txtLocalpath.Text = Path.Combine(defaultPath, fileName);
+                UpdateLocalPath();
             }
             else if(radioButtonYTBmp4.Checked == true)
             {
                 YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
                 txtURL.Text = await ytbParse.GetUrlDownloadMp4();
                 fileName = await ytbParse.GetName() + ".mp4";
-                txtLocalpath.Text = Path.Combine(defaultPath, fileName);
+                UpdateLocalPath();
             }
             
         }

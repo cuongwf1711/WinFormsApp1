@@ -1,6 +1,3 @@
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Windows.Forms;
-
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
@@ -79,17 +76,6 @@ namespace WinFormsApp1
         {
             FormHistory f = new FormHistory(_user);
             f.ShowDialog();
-        }
-
-        private void deleteAccountToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Bạn có muốn xóa không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                _user.Delete();
-                Dispose();
-            }
-
         }
     }
 }

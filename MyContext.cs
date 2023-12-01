@@ -1,10 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WinFormsApp1
 {
@@ -12,11 +6,11 @@ namespace WinFormsApp1
     {
         public DbSet<User> Users { get; set; }
         public DbSet<MyDownloadBooster> MyDownloadBoosters { get; set; }
-        //public MyContext()
-        //{
-        //    Database.EnsureDeleted();
-        //    Database.EnsureCreated();
-        //}
+        public MyContext()
+        {
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

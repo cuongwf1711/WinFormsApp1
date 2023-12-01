@@ -66,10 +66,7 @@ namespace WinFormsApp1
         {
             try
             {
-                if(!CheckPassword(Password))
-                {
-                    return false;
-                }
+                
                 using(MyContext Db = new MyContext())
                 {
                     if(Db.Users.Any(p => p.Email == Email))
@@ -78,7 +75,7 @@ namespace WinFormsApp1
                     }
                 }
                 string code = StaticFunc.GenerateRandomString(8);
-                if (!StaticFunc.SendEmail(Email, "Recovery code", code))
+                if (!StaticFunc.SendEmail(Email, "Password code", code))
                 {
                     return false;
                 }
@@ -102,22 +99,6 @@ namespace WinFormsApp1
                 using (MyContext Db = new MyContext())
                 {
                     Db.Users.Update(this);
-                    Db.SaveChanges();
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public bool Delete()
-        {
-            try
-            {
-                using (MyContext Db = new MyContext())
-                {
-                    Db.Users.Remove(this);
                     Db.SaveChanges();
                     return true;
                 }
