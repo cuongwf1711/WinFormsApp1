@@ -5,7 +5,11 @@ namespace WinFormsApp1
         public event Action RefreshFormlogin;
         private User _user;
         private int tabCount = 1;
-        private readonly HttpClient httpClient = new HttpClient();
+
+        private readonly HttpClient httpClient = new HttpClient(new HttpClientHandler()
+        {
+            ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+        });
         public Form1(User user)
         {
             InitializeComponent();

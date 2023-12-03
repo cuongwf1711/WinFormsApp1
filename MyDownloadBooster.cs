@@ -64,7 +64,7 @@ namespace WinFormsApp1
                 token.ThrowIfCancellationRequested();
                 using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Head, new Uri(UrlFileDownload));
                 using HttpResponseMessage responseHeader = await httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, token);
-                const int bufferSize = 1024 * 1024;
+                const int bufferSize = 1024 * 128;
                 if (!responseHeader.Headers.AcceptRanges.Contains("bytes"))
                 {
                     using (HttpResponseMessage response = await httpClient.GetAsync(UrlFileDownload, HttpCompletionOption.ResponseHeadersRead, token))
@@ -83,6 +83,7 @@ namespace WinFormsApp1
                                 {
                                     infoDownloading.TotalBytesDownloaded += bytesRead;
                                     infoDownloading._bytesSegmentDownloaded += bytesRead;
+                                    infoDownloading.TotalBytesSegment += bytesRead;
                                     progress.Report(infoDownloading);
                                     await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
                                 }
@@ -135,17 +136,18 @@ namespace WinFormsApp1
                                     FileSize = FileSize,
                                     TotalBytesSegment = segment.End - segment.Start + 1,
                                 };
-                                TimeSpan updateInterval = TimeSpan.FromSeconds(2);
-                                Stopwatch stopwatch = Stopwatch.StartNew(); 
+                                long updateThreshold = 2 * 1024 * 1024; // 2MB
+                                long bytesDownloadedSinceLastUpdate = 0;
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
                                 {
                                     Interlocked.Add(ref totalBytesRead, bytesRead);
                                     infoDownloading.TotalBytesDownloaded = totalBytesRead;
                                     Interlocked.Add(ref infoDownloading._bytesSegmentDownloaded, bytesRead);
-                                    if (stopwatch.Elapsed >= updateInterval)
+                                    bytesDownloadedSinceLastUpdate += bytesRead;
+                                    if (bytesDownloadedSinceLastUpdate >= updateThreshold)
                                     {
                                         progress.Report(infoDownloading);
-                                        stopwatch.Restart();
+                                        bytesDownloadedSinceLastUpdate = 0;
                                     }
                                     await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
                                 }
