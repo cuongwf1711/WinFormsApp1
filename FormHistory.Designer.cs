@@ -38,19 +38,21 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(12, 50);
+            dataGridView1.Location = new Point(20, 80);
+            dataGridView1.Margin = new Padding(5, 5, 5, 5);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(776, 388);
+            dataGridView1.Size = new Size(1261, 621);
             dataGridView1.TabIndex = 0;
             // 
             // btnDel
             // 
-            btnDel.Location = new Point(12, 12);
+            btnDel.Location = new Point(20, 19);
+            btnDel.Margin = new Padding(5, 5, 5, 5);
             btnDel.Name = "btnDel";
-            btnDel.Size = new Size(94, 29);
+            btnDel.Size = new Size(153, 46);
             btnDel.TabIndex = 1;
             btnDel.Text = "Delete";
             btnDel.UseVisualStyleBackColor = true;
@@ -58,13 +60,14 @@
             // 
             // FormHistory
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1300, 720);
             Controls.Add(btnDel);
             Controls.Add(dataGridView1);
+            Margin = new Padding(5, 5, 5, 5);
             Name = "FormHistory";
-            Text = "FormHistory";
+            Text = "History";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }

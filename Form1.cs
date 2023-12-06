@@ -32,7 +32,7 @@ namespace WinFormsApp1
                 tabControl1.TabPages.Remove(tab);
             }
         }
-        
+
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
             TabControl tc = (TabControl)sender;

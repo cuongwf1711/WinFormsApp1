@@ -30,7 +30,7 @@ namespace WinFormsApp1
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            if (txtEmail.Text.Length>0 && txtFullname.Text.Length>0)
+            if (txtEmail.Text.Length > 0 && txtFullname.Text.Length > 0)
             {
                 User user = new User() { Email = txtEmail.Text, FullName = txtFullname.Text };
                 if (user.Add())
@@ -41,7 +41,7 @@ namespace WinFormsApp1
                 else
                 {
                     MessageBox.Show("Error");
-                } 
+                }
             }
             else
             {

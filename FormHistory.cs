@@ -33,7 +33,7 @@ namespace WinFormsApp1
                 {
                     MyDownloadBooster myDownloadBooster = new MyDownloadBooster() { MyDownloadBoosterId = Convert.ToInt32(r.Cells["MyDownloadBoosterId"].Value) };
                     myDownloadBooster = myDownloadBooster.Get();
-                    if(myDownloadBooster == null || !myDownloadBooster.Delete())
+                    if (myDownloadBooster == null || !myDownloadBooster.Delete())
                     {
                         MessageBox.Show("Error");
                         RefreshDgv();

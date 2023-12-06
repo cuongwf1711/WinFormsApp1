@@ -49,7 +49,7 @@
 
         private void btnConfirmPassword_Click(object sender, EventArgs e)
         {
-            if(_user.ChangePassword(txtOldPass.Text, txtNewPass.Text, txtNewPassAgain.Text))
+            if (_user.ChangePassword(txtOldPass.Text, txtNewPass.Text, txtNewPassAgain.Text))
             {
                 MessageBox.Show("Done");
                 panelInfo.BringToFront();

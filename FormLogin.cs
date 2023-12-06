@@ -44,7 +44,7 @@ namespace WinFormsApp1
         }
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if(txtEmail.Text.Length > 0 && txtPassword.Text.Length>0)
+            if (txtEmail.Text.Length > 0 && txtPassword.Text.Length > 0)
             {
                 User user = new User { Password = txtPassword.Text, Email = txtEmail.Text };
                 user = user.Get();
@@ -60,8 +60,8 @@ namespace WinFormsApp1
                 }
             }
             else
-            { 
-                MessageBox.Show("Error"); 
+            {
+                MessageBox.Show("Error");
             }
         }
 
@@ -86,7 +86,7 @@ namespace WinFormsApp1
                 else
                 {
                     MessageBox.Show("Error");
-                } 
+                }
             }
             else
             {
