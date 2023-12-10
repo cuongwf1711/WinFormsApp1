@@ -17,7 +17,7 @@ namespace WinFormsApp1
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.ASCII.GetBytes(rawData));
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < bytes.Length; i++)
                 {
@@ -75,26 +75,28 @@ namespace WinFormsApp1
         }
         public static string GenerateRandomString(int length)
         {
-            while (true)
+            const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string lowercase = "abcdefghijklmnopqrstuvwxyz";
+            const string digits = "0123456789";
+
+            string characters = uppercase + lowercase + digits;
+
+            Random random = new Random();
+            string result = uppercase[random.Next(uppercase.Length)].ToString()
+                + lowercase[random.Next(lowercase.Length)].ToString()
+                + digits[random.Next(digits.Length)].ToString();
+
+            for (int i = result.Length; i < length; i++)
             {
-                StringBuilder randomStringBuilder = new StringBuilder();
-                Random rand = new Random();
-                for (int i = 0; i < length; i++)
-                {
-                    int randValue = rand.Next(33, 127);
-                    randomStringBuilder.Append(Convert.ToChar(randValue));
-                }
-                Regex regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$");
-                string stringResult = randomStringBuilder.ToString();
-                if (regex.IsMatch(stringResult))
-                {
-                    return stringResult;
-                }
-                else
-                {
-                    continue;
-                }
+                result += characters[random.Next(characters.Length)];
             }
+
+            return new string(result.OrderBy(x => random.Next()).ToArray());
+        }
+        public static bool CheckPassword(string password)
+        {
+            Regex regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$");
+            return regex.IsMatch(password);
         }
     }
 }

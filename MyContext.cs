@@ -8,7 +8,7 @@ namespace WinFormsApp1
         public DbSet<MyDownloadBooster> MyDownloadBoosters { get; set; }
         public MyContext()
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

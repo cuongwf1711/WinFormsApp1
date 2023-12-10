@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -114,10 +115,31 @@ namespace WinFormsApp1
             });
             d.Status = t;
             d.Add();
-            labelStatus.Text = $"Status : {t}";
+            EndDownload(d);
+        }
+        private void EndDownload(MyDownloadBooster d)
+        {
+            labelStatus.Text = $"Status : {d.Status}";
+            labelFileSize.Text = $"File size : {d.FileSize} kb";
             btnDownload.Enabled = true;
             btnCancel.Enabled = false;
-            MessageBox.Show("Done");
+            if(d.Status == true)
+            {
+                DialogResult result = MessageBox.Show($"Downloaded successfully at: {d.LocalPath}, open it", "Done", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Process process = new System.Diagnostics.Process()
+                    {
+                        StartInfo = new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = d.LocalPath }
+                    };
+                    process.Start();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Download failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
         void updateDownloading(InfoDownloading infoDownloading)
         {

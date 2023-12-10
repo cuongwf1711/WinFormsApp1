@@ -24,11 +24,7 @@ namespace WinFormsApp1
         {
             MyDownloads = new List<MyDownloadBooster>();
         }
-        public bool CheckPassword(string password)
-        {
-            Regex regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$");
-            return regex.IsMatch(password);
-        }
+        
         public List<MyDownloadBooster> GetMyDownloads()
         {
             using (MyContext Db = new MyContext())
@@ -74,11 +70,13 @@ namespace WinFormsApp1
                         return false;
                     }
                 }
+
                 string code = StaticFunc.GenerateRandomString(8);
                 if (!StaticFunc.SendEmail(Email, "Password code", code))
                 {
                     return false;
                 }
+
                 Password = StaticFunc.ComputeSha256Hash(code);
                 using (MyContext Db = new MyContext())
                 {
@@ -121,7 +119,7 @@ namespace WinFormsApp1
             {
                 return false;
             }
-            if (!CheckPassword(newPass))
+            if (!StaticFunc.CheckPassword(newPass))
             {
                 return false;
             }
