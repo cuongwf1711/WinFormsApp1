@@ -67,6 +67,7 @@ namespace WinFormsApp1
                 const int bufferSize = 1024 * 128;
                 if (!responseHeader.Headers.AcceptRanges.Contains("bytes"))
                 {
+                    token.ThrowIfCancellationRequested();
                     using (HttpResponseMessage response = await httpClient.GetAsync(UrlFileDownload, HttpCompletionOption.ResponseHeadersRead, token))
                     {
                         using (Stream stream = await response.Content.ReadAsStreamAsync(token))
@@ -81,6 +82,7 @@ namespace WinFormsApp1
                                 };
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
                                 {
+                                    token.ThrowIfCancellationRequested();
                                     infoDownloading.TotalBytesDownloaded += bytesRead;
                                     infoDownloading._bytesSegmentDownloaded += bytesRead;
                                     infoDownloading.TotalBytesSegment += bytesRead;
@@ -123,6 +125,7 @@ namespace WinFormsApp1
                     using HttpResponseMessage responseMessage = await httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, token);
                     if (responseMessage.IsSuccessStatusCode)
                     {
+                        token.ThrowIfCancellationRequested();
                         string tempFilePath = Path.GetTempFileName();
                         using (Stream stream = await responseMessage.Content.ReadAsStreamAsync(token))
                         {
@@ -140,6 +143,7 @@ namespace WinFormsApp1
                                 long bytesDownloadedSinceLastUpdate = 0;
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
                                 {
+                                    token.ThrowIfCancellationRequested();
                                     Interlocked.Add(ref totalBytesRead, bytesRead);
                                     infoDownloading.TotalBytesDownloaded = totalBytesRead;
                                     Interlocked.Add(ref infoDownloading._bytesSegmentDownloaded, bytesRead);
@@ -162,9 +166,11 @@ namespace WinFormsApp1
                     }
                 });
                 
+
                 using FileStream destinationStream = new FileStream(LocalPath, FileMode.Append);
                 foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                 {
+                    token.ThrowIfCancellationRequested();
                     using (FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open))
                     {
                         await tempFileStream.CopyToAsync(destinationStream, token);
