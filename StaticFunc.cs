@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Data;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
@@ -17,7 +14,7 @@ namespace WinFormsApp1
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.ASCII.GetBytes(rawData));
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < bytes.Length; i++)
                 {
@@ -61,10 +58,10 @@ namespace WinFormsApp1
         {
             try
             {
-                string sendMailFrom = "testpblne@gmail.com";
+                string sendMailFrom = "ruivalien@gmail.com";
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 587);
                 SmtpServer.EnableSsl = true;
-                SmtpServer.Credentials = new NetworkCredential(sendMailFrom, "wtlnwytgfxcuuwto");
+                SmtpServer.Credentials = new NetworkCredential(sendMailFrom, "gkvdwwsbqzttwfgg");
                 SmtpServer.Send(new MailMessage(sendMailFrom, sendMailTo, subJect, body));
                 return true;
             }
@@ -82,21 +79,22 @@ namespace WinFormsApp1
             string characters = uppercase + lowercase + digits;
 
             Random random = new Random();
-            string result = uppercase[random.Next(uppercase.Length)].ToString()
-                + lowercase[random.Next(lowercase.Length)].ToString()
-                + digits[random.Next(digits.Length)].ToString();
+            StringBuilder result = new StringBuilder(length);
+            result.Append(uppercase[random.Next(uppercase.Length)]);
+            result.Append(lowercase[random.Next(lowercase.Length)]);
+            result.Append(digits[random.Next(digits.Length)]);
 
             for (int i = result.Length; i < length; i++)
             {
-                result += characters[random.Next(characters.Length)];
+                result.Append(characters[random.Next(characters.Length)]);
             }
 
-            return new string(result.OrderBy(x => random.Next()).ToArray());
+            return new string(result.ToString().OrderBy(x => random.Next()).ToArray());
         }
+
         public static bool CheckPassword(string password)
         {
-            Regex regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$");
-            return regex.IsMatch(password);
+            return new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$").IsMatch(password);
         }
     }
 }

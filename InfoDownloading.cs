@@ -18,6 +18,7 @@ namespace WinFormsApp1
                 _bytesSegmentDownloaded = value; 
             } 
         }
+        public string Status { get; set; }
         [Browsable(false)]
         public long TotalBytesDownloaded { get; set; }
         [Browsable(false)]

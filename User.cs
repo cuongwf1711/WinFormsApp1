@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace WinFormsApp1
 {
@@ -44,7 +38,7 @@ namespace WinFormsApp1
                         return false;
                     }
                     string code = StaticFunc.GenerateRandomString(8);
-                    if (!StaticFunc.SendEmail(Email, "Recovery code", code))
+                    if (!StaticFunc.SendEmail(Email, "Recovery password code", code))
                     {
                         return false;
                     }
@@ -62,7 +56,6 @@ namespace WinFormsApp1
         {
             try
             {
-                
                 using(MyContext Db = new MyContext())
                 {
                     if(Db.Users.Any(p => p.Email == Email))
@@ -106,7 +99,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
-        public User Get()
+        public User Login()
         {
             using (MyContext Db = new MyContext())
             {
@@ -119,10 +112,12 @@ namespace WinFormsApp1
             {
                 return false;
             }
+
             if (!StaticFunc.CheckPassword(newPass))
             {
                 return false;
             }
+
             try
             {
                 using (MyContext Db = new MyContext())

@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using YoutubeExplode;
-using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 namespace WinFormsApp1
@@ -16,7 +15,7 @@ namespace WinFormsApp1
                 var videoId = YoutubeExplode.Videos.VideoId.Parse(UrlOfVideo);
                 var video = await youtube.Videos.GetAsync(videoId);
                 string s =  Regex.Replace(video.Title, "[^a-zA-Z0-9]+", "", RegexOptions.Compiled);
-                return s.Substring(0, Math.Min(s.Length, 200));
+                return s.Substring(0, Math.Min(s.Length, 50));
             }
             catch
             {

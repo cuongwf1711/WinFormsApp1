@@ -1,6 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Net.Http.Headers;
 
 namespace WinFormsApp1
@@ -56,7 +54,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
-        public async Task<bool> DownloadAsync(IProgress<InfoDownloading> progress, HttpClient httpClient, CancellationToken token = default)
+        public async Task<bool> DownloadAsync(IProgress<InfoDownloading> progress, HttpClient httpClient, CancellationToken token)
         {
             ConcurrentDictionary<long, string> tempFilesDictionary = new ConcurrentDictionary<long, string>();
             try
@@ -65,6 +63,7 @@ namespace WinFormsApp1
                 using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Head, new Uri(UrlFileDownload));
                 using HttpResponseMessage responseHeader = await httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, token);
                 const int bufferSize = 1024 * 128;
+
                 if (!responseHeader.Headers.AcceptRanges.Contains("bytes"))
                 {
                     token.ThrowIfCancellationRequested();
@@ -76,31 +75,40 @@ namespace WinFormsApp1
                             {
                                 byte[] buffer = new byte[bufferSize];
                                 int bytesRead;
+
                                 InfoDownloading infoDownloading = new InfoDownloading()
                                 {
                                     FileName = LocalPath
                                 };
+
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
                                 {
                                     token.ThrowIfCancellationRequested();
                                     infoDownloading.TotalBytesDownloaded += bytesRead;
                                     infoDownloading._bytesSegmentDownloaded += bytesRead;
                                     infoDownloading.TotalBytesSegment += bytesRead;
+                                    infoDownloading.Status = "Downloading";
                                     progress.Report(infoDownloading);
                                     await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
                                 }
+
                                 FileSize = infoDownloading.TotalBytesDownloaded;
+
+                                infoDownloading.Status = "Done";
+                                progress.Report(infoDownloading);
                             }
                         }
                     }
                     return true;
                 }
+
                 FileSize = responseHeader.Content.Headers.ContentLength.GetValueOrDefault();
                 if(FileSize <= 0)
                 { 
                     return false; 
                 }
                 FileSizeUpdated?.Invoke(FileSize);
+
                 List<Range> ListSegments = new List<Range>();
                 for (int chunk = 0; chunk < ConnectionNumber; chunk++)
                 {
@@ -111,6 +119,7 @@ namespace WinFormsApp1
                         End = chunk == ConnectionNumber - 1 ? FileSize - 1 : (chunk + 1) * (FileSize / ConnectionNumber) - 1
                     });
                 }
+
                 long totalBytesRead = 0;
                 await Parallel.ForEachAsync(ListSegments, new ParallelOptions() { CancellationToken = token }, async (segment, token) =>
                 {
@@ -133,14 +142,17 @@ namespace WinFormsApp1
                             {
                                 byte[] buffer = new byte[bufferSize];
                                 int bytesRead;
+
                                 InfoDownloading infoDownloading = new InfoDownloading()
                                 {
                                     FileName = Path.GetFileName(tempFilePath),
                                     FileSize = FileSize,
                                     TotalBytesSegment = segment.End - segment.Start + 1,
-                                };
+                            };
+
                                 long updateThreshold = 2 * 1024 * 1024; // 2MB
                                 long bytesDownloadedSinceLastUpdate = 0;
+
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
                                 {
                                     token.ThrowIfCancellationRequested();
@@ -150,11 +162,14 @@ namespace WinFormsApp1
                                     bytesDownloadedSinceLastUpdate += bytesRead;
                                     if (bytesDownloadedSinceLastUpdate >= updateThreshold)
                                     {
+                                        infoDownloading.Status = "Downloading";
                                         progress.Report(infoDownloading);
                                         bytesDownloadedSinceLastUpdate = 0;
                                     }
                                     await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
                                 }
+
+                                infoDownloading.Status = "Done";
                                 progress.Report(infoDownloading);
                             }
                         }
@@ -166,7 +181,6 @@ namespace WinFormsApp1
                     }
                 });
                 
-
                 using FileStream destinationStream = new FileStream(LocalPath, FileMode.Append);
                 foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                 {
@@ -177,20 +191,22 @@ namespace WinFormsApp1
                     }
                     File.Delete(tempFile.Value);
                 }
+
                 tempFilesDictionary.Clear();
                 return true;
             }
-            catch(Exception ex)
+            catch
             {
-                Debug.WriteLine(ex);
                 if (File.Exists(LocalPath))
                 {
                     File.Delete(LocalPath);
                 }
+
                 foreach (var tempFile in tempFilesDictionary)
                 {
                     File.Delete(tempFile.Value);
                 }
+
                 tempFilesDictionary.Clear();
                 return false;
             }

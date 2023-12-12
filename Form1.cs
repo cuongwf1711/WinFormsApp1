@@ -10,12 +10,18 @@ namespace WinFormsApp1
         {
             ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
         });
+
         public Form1(User user)
         {
             InitializeComponent();
+
             _user = user;
             adminToolStripMenuItem.Text = _user.FullName;
-            DownloadPage dp = new DownloadPage(httpClient, _user.UserId);
+
+            DownloadPage dp = new DownloadPage(httpClient, _user.UserId)
+            {
+                cts = new CancellationTokenSource()
+            };
             dp.Location = new Point(6, 6);
             NewTab1.Controls.Add(dp);
         }
@@ -25,8 +31,13 @@ namespace WinFormsApp1
             if (tabControl1.SelectedTab.Text != "+")
             {
                 TabPage tab = tabControl1.SelectedTab;
+                
                 foreach (Control control in tab.Controls)
                 {
+                    if(control is DownloadPage)
+                    {
+                        ((DownloadPage)control).cts.Cancel();
+                    }
                     control.Dispose();
                 }
                 tabControl1.TabPages.Remove(tab);
@@ -44,7 +55,10 @@ namespace WinFormsApp1
                 newTab.UseVisualStyleBackColor = true;
                 tc.TabPages.Insert(tc.TabCount - 1, newTab);
 
-                DownloadPage dp = new DownloadPage(httpClient, _user.UserId);
+                DownloadPage dp = new DownloadPage(httpClient, _user.UserId)
+                {
+                    cts = new CancellationTokenSource()
+                };
                 dp.Location = new Point(6, 6);
                 newTab.Controls.Add(dp);
 

@@ -1,16 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-
-namespace WinFormsApp1
+﻿namespace WinFormsApp1
 {
     public partial class FormLogin : Form
     {
@@ -47,22 +35,16 @@ namespace WinFormsApp1
             if (txtEmail.Text.Length > 0 && txtPassword.Text.Length > 0)
             {
                 User user = new User { Password = txtPassword.Text, Email = txtEmail.Text };
-                user = user.Get();
+                user = user.Login();
                 if (user != null)
                 {
                     Form1 f = new Form1(user);
                     f.RefreshFormlogin += RefreshTextbox;
                     f.ShowDialog();
-                }
-                else
-                {
-                    MessageBox.Show("Error");
+                    return;
                 }
             }
-            else
-            {
-                MessageBox.Show("Error");
-            }
+            MessageBox.Show("Error");
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -82,16 +64,10 @@ namespace WinFormsApp1
                 if (user.ForgotPassword())
                 {
                     MessageBox.Show("Done");
-                }
-                else
-                {
-                    MessageBox.Show("Error");
+                    return;
                 }
             }
-            else
-            {
-                MessageBox.Show("Error");
-            }
+            MessageBox.Show("Error");
         }
     }
 }

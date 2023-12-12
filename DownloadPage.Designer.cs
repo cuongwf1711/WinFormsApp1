@@ -171,7 +171,7 @@
             radioButtonYTBmp4.TabStop = true;
             radioButtonYTBmp4.Text = "Youtube mp4";
             radioButtonYTBmp4.UseVisualStyleBackColor = true;
-            radioButtonYTBmp4.CheckedChanged += radioButton_CheckedChanged;
+            radioButtonYTBmp4.CheckedChanged += radioButtonYTBmp4_CheckedChanged;
             // 
             // radioButtonYTBmp3
             // 
@@ -183,7 +183,7 @@
             radioButtonYTBmp3.TabStop = true;
             radioButtonYTBmp3.Text = "Youtube mp3";
             radioButtonYTBmp3.UseVisualStyleBackColor = true;
-            radioButtonYTBmp3.CheckedChanged += radioButton_CheckedChanged;
+            radioButtonYTBmp3.CheckedChanged += radioButtonYTBmp3_CheckedChanged;
             // 
             // radioButtonNone
             // 
@@ -219,7 +219,7 @@
             btnCancel.Location = new Point(1032, 391);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(110, 33);
-            btnCancel.TabIndex = 9;
+            btnCancel.TabIndex = 5;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += buttonCancel_Click;

@@ -5,10 +5,12 @@
         private readonly User _user;
         public FormInfo(User user)
         {
+            _user = user;
+
             InitializeComponent();
 
-            _user = user;
             panelInfo.BringToFront();
+
             txtEmail.Text = _user.Email;
             txtFullname.Text = _user.FullName;
         }

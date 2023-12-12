@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
@@ -18,6 +8,12 @@ namespace WinFormsApp1
     {
         private readonly HttpClient _httpClient;
         private readonly int _userId;
+        public CancellationTokenSource cts { get; set; }
+
+        private string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+        private string fileName = "";
+        private BindingList<InfoDownloading> dataDownloading = new BindingList<InfoDownloading>();
+
         public DownloadPage(HttpClient httpClient, int userId)
         {
             _httpClient = httpClient;
@@ -25,15 +21,17 @@ namespace WinFormsApp1
 
             InitializeComponent();
 
-            dataGridView1.DataSource = data;
-            cbbConnectNum.Items.AddRange(new object[] { 1, 2, 4, 8, 16, 24, 32 });
+            dataGridView1.DataSource = dataDownloading;
+            cbbConnectNum.Items.AddRange(new object[] { 1, 2, 4, 8, 16, 24 });
             cbbConnectNum.SelectedIndex = 2;
             radioButtonNone.Checked = true;
         }
-        private string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-        private string fileName = "";
-        private CancellationTokenSource cts;
-        private BindingList<InfoDownloading> data = new BindingList<InfoDownloading>();
+
+        void UpdateLocalPath()
+        {
+            txtLocalpath.Text = Path.Combine(defaultPath, fileName);
+        }
+
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderDlg = new FolderBrowserDialog();
@@ -46,27 +44,31 @@ namespace WinFormsApp1
                 UpdateLocalPath();
             }
         }
-        void UpdateLocalPath()
+
+        private void BeginDownload()
         {
-            txtLocalpath.Text = Path.Combine(defaultPath, fileName);
+            radioButtonNone.Checked = true;
+
+            btnDownload.Enabled = false;
+            btnCancel.Enabled = true;
+
+
+            labelStatus.Text = "Status : Downloading";
+            labelFileSize.Text = "File size : ...";
+            labelPercentage.Text = "0 %";
+            progressBar1.Value = 0;
+
+            dataDownloading.Clear();
         }
+
         private void UpdateFileSize(long fileSize)
         {
             Invoke(() =>
             {
-                labelFileSize.Text = $"File size : {fileSize} kb";
+                labelFileSize.Text = $"File size : {fileSize} b";
             });
         }
-        private void BeginDownload()
-        {
-            data.Clear();
-            labelStatus.Text = "Status : Downloading";
-            btnDownload.Enabled = false;
-            btnCancel.Enabled = true;
-            progressBar1.Value = 0;
-            labelFileSize.Text = "File size : ...";
-            radioButtonNone.Checked = true;
-        }
+        private string pathSaveDownloading;
         private async void btnDownload_Click(object sender, EventArgs e)
         {
             if (txtLocalpath.Text == string.Empty || txtURL.Text == string.Empty)
@@ -75,55 +77,57 @@ namespace WinFormsApp1
                 return;
             }
 
-            if(File.Exists(txtLocalpath.Text))
+            if (File.Exists(txtLocalpath.Text))
             {
-                DialogResult result = MessageBox.Show("File đã tồn tại, bạn có muốn thêm chỉ số vào không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("The file already exists. Do you want to add an index to it?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     string extension = Path.GetExtension(fileName);
                     string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
 
                     int count = 1;
-                    string newFileName = $"{fileNameWithoutExtension}({count}){extension}";
+                    fileName = $"{fileNameWithoutExtension}({count}){extension}";
 
-                    while (File.Exists(Path.Combine(defaultPath, newFileName)))
+                    while (File.Exists(Path.Combine(defaultPath, fileName)))
                     {
                         count++;
-                        newFileName = $"{fileNameWithoutExtension}({count}){extension}";
+                        fileName = $"{fileNameWithoutExtension}({count}){extension}";
                     }
-
-                    fileName = newFileName;
                     UpdateLocalPath();
                 }
             }
+
             BeginDownload();
+            pathSaveDownloading = txtLocalpath.Text;
+
             MyDownloadBooster d = new MyDownloadBooster()
             {
                 UrlFileDownload = txtURL.Text,
                 LocalPath = txtLocalpath.Text,
                 ConnectionNumber = Convert.ToInt32(cbbConnectNum.SelectedItem),
                 DateTime = DateTime.Now,
-                UserId = _userId
+                UserId = _userId,
             };
             d.FileSizeUpdated += UpdateFileSize;
-            cts = new CancellationTokenSource();
-            bool t = false;
-            var progress = new Progress<InfoDownloading>(updateDownloading);
+
+            Progress<InfoDownloading> progress = new Progress<InfoDownloading>(updateDownloading);
             await Task.Run(async () =>
             {
-                t = await d.DownloadAsync(progress, _httpClient, cts.Token);
+                d.Status = await d.DownloadAsync(progress, _httpClient, cts.Token);
             });
-            d.Status = t;
             d.Add();
+
             EndDownload(d);
         }
         private void EndDownload(MyDownloadBooster d)
         {
             labelStatus.Text = $"Status : {d.Status}";
-            labelFileSize.Text = $"File size : {d.FileSize} kb";
+            labelFileSize.Text = $"File size : {d.FileSize} b";
+
             btnDownload.Enabled = true;
             btnCancel.Enabled = false;
-            if(d.Status == true)
+
+            if (d.Status == true)
             {
                 DialogResult result = MessageBox.Show($"Downloaded successfully at: {d.LocalPath}, open it", "Done", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
@@ -139,22 +143,24 @@ namespace WinFormsApp1
             {
                 MessageBox.Show("Download failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
         }
         void updateDownloading(InfoDownloading infoDownloading)
         {
-            InfoDownloading obj = data.FirstOrDefault(p => p.FileName == infoDownloading.FileName);
-            if (infoDownloading.FileName == txtLocalpath.Text)
+            InfoDownloading obj = dataDownloading.FirstOrDefault(p => p.FileName == infoDownloading.FileName);
+            if (infoDownloading.FileName == pathSaveDownloading)
             {
                 labelPercentage.Text = infoDownloading.TotalBytesDownloaded.ToString();
-                if (data.Count == 0)
+
+                if (dataDownloading.Count == 0)
                 {
-                    data.Add(infoDownloading);
+                    dataDownloading.Add(infoDownloading);
                 }
                 else
                 {
                     obj.BytesSegmentDownloaded = infoDownloading.BytesSegmentDownloaded;
-                    data.ResetBindings();
+                    obj.Status = infoDownloading.Status;
+                    dataDownloading.ResetBindings();
                 }
             }
             else
@@ -162,14 +168,16 @@ namespace WinFormsApp1
                 int percent = (int)(infoDownloading.TotalBytesDownloaded * 100 / infoDownloading.FileSize);
                 progressBar1.Value = percent;
                 labelPercentage.Text = $"{percent} %";
+
                 if (obj != null)
                 {
                     obj.BytesSegmentDownloaded = infoDownloading.BytesSegmentDownloaded;
-                    data.ResetBindings();
+                    obj.Status = infoDownloading.Status;
+                    dataDownloading.ResetBindings();
                 }
                 else
                 {
-                    data.Add(infoDownloading);
+                    dataDownloading.Add(infoDownloading);
                 }
             }
         }
@@ -189,23 +197,37 @@ namespace WinFormsApp1
             cts.Cancel();
         }
 
-        private async void radioButton_CheckedChanged(object sender, EventArgs e)
+        private async void radioButtonYTBmp3_CheckedChanged(object sender, EventArgs e)
         {
-            if(radioButtonYTBmp3.Checked == true)
+            if (radioButtonYTBmp3.Checked == true)
             {
                 YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
+                fileName = await ytbParse.GetName();
+                if (fileName.IsNullOrEmpty())
+                {
+                    MessageBox.Show("Error");
+                    return;
+                }
                 txtURL.Text = await ytbParse.GetUrlDownloadMp3();
-                fileName = await ytbParse.GetName() + ".mp3";
-                UpdateLocalPath();
+                fileName = fileName + ".mp3";
             }
-            else if(radioButtonYTBmp4.Checked == true)
+        }
+
+        private async void radioButtonYTBmp4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonYTBmp4.Checked == true)
             {
                 YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
+                fileName = await ytbParse.GetName();
+                if (fileName.IsNullOrEmpty())
+                {
+                    MessageBox.Show("Error");
+                    return;
+                }
                 txtURL.Text = await ytbParse.GetUrlDownloadMp4();
-                fileName = await ytbParse.GetName() + ".mp4";
+                fileName = fileName + ".mp4";
                 UpdateLocalPath();
             }
-            
         }
     }
 }
