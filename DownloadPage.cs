@@ -202,14 +202,15 @@ namespace WinFormsApp1
             if (radioButtonYTBmp3.Checked == true)
             {
                 YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
-                fileName = await ytbParse.GetName();
-                if (fileName.IsNullOrEmpty())
+                string nameVideo = await ytbParse.GetName();
+                if (nameVideo.IsNullOrEmpty())
                 {
                     MessageBox.Show("Error");
                     return;
                 }
-                txtURL.Text = await ytbParse.GetUrlDownloadMp3();
-                fileName = fileName + ".mp3";
+                txtURL.Text = await ytbParse.GetUrlDownloadMp4();
+                fileName = nameVideo + ".mp3";
+                UpdateLocalPath();
             }
         }
 
@@ -218,14 +219,14 @@ namespace WinFormsApp1
             if (radioButtonYTBmp4.Checked == true)
             {
                 YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
-                fileName = await ytbParse.GetName();
-                if (fileName.IsNullOrEmpty())
+                string nameVideo = await ytbParse.GetName();
+                if (nameVideo.IsNullOrEmpty())
                 {
                     MessageBox.Show("Error");
                     return;
                 }
                 txtURL.Text = await ytbParse.GetUrlDownloadMp4();
-                fileName = fileName + ".mp4";
+                fileName = nameVideo + ".mp4";
                 UpdateLocalPath();
             }
         }

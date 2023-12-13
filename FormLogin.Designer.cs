@@ -46,46 +46,41 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(88, 157);
-            label1.Margin = new Padding(5, 0, 5, 0);
+            label1.Location = new Point(54, 98);
             label1.Name = "label1";
-            label1.Size = new Size(71, 32);
+            label1.Size = new Size(46, 20);
             label1.TabIndex = 0;
             label1.Text = "Email";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(88, 266);
-            label2.Margin = new Padding(5, 0, 5, 0);
+            label2.Location = new Point(54, 166);
             label2.Name = "label2";
-            label2.Size = new Size(111, 32);
+            label2.Size = new Size(70, 20);
             label2.TabIndex = 0;
             label2.Text = "Password";
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(263, 152);
-            txtEmail.Margin = new Padding(5, 5, 5, 5);
+            txtEmail.Location = new Point(162, 95);
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(714, 39);
+            txtEmail.Size = new Size(441, 27);
             txtEmail.TabIndex = 0;
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(263, 246);
-            txtPassword.Margin = new Padding(5, 5, 5, 5);
+            txtPassword.Location = new Point(162, 154);
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(714, 39);
+            txtPassword.Size = new Size(441, 27);
             txtPassword.TabIndex = 1;
             txtPassword.UseSystemPasswordChar = true;
             // 
             // btnRegister
             // 
-            btnRegister.Location = new Point(336, 370);
-            btnRegister.Margin = new Padding(5, 5, 5, 5);
+            btnRegister.Location = new Point(207, 231);
             btnRegister.Name = "btnRegister";
-            btnRegister.Size = new Size(153, 46);
+            btnRegister.Size = new Size(94, 29);
             btnRegister.TabIndex = 4;
             btnRegister.Text = "Register";
             btnRegister.UseVisualStyleBackColor = true;
@@ -93,10 +88,9 @@
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(661, 370);
-            btnLogin.Margin = new Padding(5, 5, 5, 5);
+            btnLogin.Location = new Point(407, 231);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(153, 46);
+            btnLogin.Size = new Size(94, 29);
             btnLogin.TabIndex = 2;
             btnLogin.Text = "Login";
             btnLogin.UseVisualStyleBackColor = true;
@@ -104,10 +98,9 @@
             // 
             // btnForgot
             // 
-            btnForgot.Location = new Point(499, 370);
-            btnForgot.Margin = new Padding(5, 5, 5, 5);
+            btnForgot.Location = new Point(307, 231);
             btnForgot.Name = "btnForgot";
-            btnForgot.Size = new Size(153, 46);
+            btnForgot.Size = new Size(94, 29);
             btnForgot.TabIndex = 3;
             btnForgot.Text = "Forgot";
             btnForgot.UseVisualStyleBackColor = true;
@@ -116,10 +109,9 @@
             // pictureBoxHide
             // 
             pictureBoxHide.Image = (Image)resources.GetObject("pictureBoxHide.Image");
-            pictureBoxHide.Location = new Point(1029, 246);
-            pictureBoxHide.Margin = new Padding(5, 5, 5, 5);
+            pictureBoxHide.Location = new Point(633, 154);
             pictureBoxHide.Name = "pictureBoxHide";
-            pictureBoxHide.Size = new Size(73, 54);
+            pictureBoxHide.Size = new Size(45, 34);
             pictureBoxHide.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBoxHide.TabIndex = 3;
             pictureBoxHide.TabStop = false;
@@ -128,10 +120,9 @@
             // pictureBoxShow
             // 
             pictureBoxShow.Image = (Image)resources.GetObject("pictureBoxShow.Image");
-            pictureBoxShow.Location = new Point(1029, 246);
-            pictureBoxShow.Margin = new Padding(5, 5, 5, 5);
+            pictureBoxShow.Location = new Point(633, 154);
             pictureBoxShow.Name = "pictureBoxShow";
-            pictureBoxShow.Size = new Size(73, 54);
+            pictureBoxShow.Size = new Size(45, 34);
             pictureBoxShow.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBoxShow.TabIndex = 3;
             pictureBoxShow.TabStop = false;
@@ -141,17 +132,18 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(512, 52);
+            label3.Location = new Point(315, 32);
+            label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
-            label3.Size = new Size(114, 45);
+            label3.Size = new Size(70, 28);
             label3.TabIndex = 5;
             label3.Text = "Log In";
             // 
             // FormLogin
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1188, 511);
+            ClientSize = new Size(731, 319);
             Controls.Add(label3);
             Controls.Add(btnForgot);
             Controls.Add(btnLogin);
@@ -162,8 +154,8 @@
             Controls.Add(label1);
             Controls.Add(pictureBoxHide);
             Controls.Add(pictureBoxShow);
-            Margin = new Padding(5, 5, 5, 5);
             Name = "FormLogin";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
             ((System.ComponentModel.ISupportInitialize)pictureBoxHide).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxShow).EndInit();
