@@ -1,4 +1,6 @@
-﻿namespace WinFormsApp1
+﻿using System.Diagnostics;
+
+namespace WinFormsApp1
 {
     public partial class FormHistory : Form
     {
@@ -31,6 +33,26 @@
                     }
                 }
                 RefreshDgv();
+            }
+        }
+
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && (e.ColumnIndex == 1 || e.ColumnIndex == 2))
+            {
+                string value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                Process process = new System.Diagnostics.Process()
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = value }
+                };
+                try
+                {
+                    process.Start();
+                }
+                catch 
+                {
+                    MessageBox.Show("File path doesn't exist or be changed");
+                }
             }
         }
     }

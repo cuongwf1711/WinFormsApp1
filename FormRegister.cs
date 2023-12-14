@@ -27,16 +27,10 @@
                 {
                     MessageBox.Show("Done");
                     Dispose();
-                }
-                else
-                {
-                    MessageBox.Show("Error");
+                    return;
                 }
             }
-            else
-            {
-                MessageBox.Show("Error");
-            }
+            MessageBox.Show("Error");
         }
     }
 }

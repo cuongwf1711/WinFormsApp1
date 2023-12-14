@@ -73,7 +73,7 @@ namespace WinFormsApp1
         {
             if (txtLocalpath.Text == string.Empty || txtURL.Text == string.Empty)
             {
-                MessageBox.Show("Error");
+                MessageBox.Show("Field is missing");
                 return;
             }
 
@@ -129,7 +129,7 @@ namespace WinFormsApp1
 
             if (d.Status == true)
             {
-                DialogResult result = MessageBox.Show($"Downloaded successfully at: {d.LocalPath}, open it", "Done", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show($"Downloaded successfully at: {d.LocalPath}, open it", "Done", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
                 {
                     Process process = new System.Diagnostics.Process()
@@ -141,7 +141,7 @@ namespace WinFormsApp1
             }
             else
             {
-                MessageBox.Show("Download failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Download was cancelled or failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -208,7 +208,7 @@ namespace WinFormsApp1
                     MessageBox.Show("Error");
                     return;
                 }
-                txtURL.Text = await ytbParse.GetUrlDownloadMp4();
+                txtURL.Text = await ytbParse.GetUrlDownloadMp3();
                 fileName = nameVideo + ".mp3";
                 UpdateLocalPath();
             }
