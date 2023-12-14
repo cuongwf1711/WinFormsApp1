@@ -51,7 +51,7 @@ namespace WinFormsApp1
                 }
                 catch 
                 {
-                    MessageBox.Show("File path doesn't exist or be changed");
+                    MessageBox.Show("File path doesn't exist or has been changed");
                 }
             }
         }
