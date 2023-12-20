@@ -50,7 +50,6 @@
         private void btnRegister_Click(object sender, EventArgs e)
         {
             FormRegister f = new FormRegister();
-            f.StartPosition = FormStartPosition.Manual;
             f.Location = Location;
             f.RefreshFormlogin += RefreshTextbox;
             f.ShowDialog();

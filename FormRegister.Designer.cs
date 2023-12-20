@@ -40,45 +40,40 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(183, 160);
-            label1.Margin = new Padding(5, 0, 5, 0);
+            label1.Location = new Point(113, 100);
             label1.Name = "label1";
-            label1.Size = new Size(71, 32);
+            label1.Size = new Size(46, 20);
             label1.TabIndex = 0;
             label1.Text = "Email";
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(453, 160);
-            txtEmail.Margin = new Padding(5, 5, 5, 5);
+            txtEmail.Location = new Point(279, 100);
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(474, 39);
+            txtEmail.Size = new Size(293, 27);
             txtEmail.TabIndex = 1;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(183, 254);
-            label3.Margin = new Padding(5, 0, 5, 0);
+            label3.Location = new Point(113, 159);
             label3.Name = "label3";
-            label3.Size = new Size(112, 32);
+            label3.Size = new Size(69, 20);
             label3.TabIndex = 0;
             label3.Text = "Fullname";
             // 
             // txtFullname
             // 
-            txtFullname.Location = new Point(453, 254);
-            txtFullname.Margin = new Padding(5, 5, 5, 5);
+            txtFullname.Location = new Point(279, 159);
             txtFullname.Name = "txtFullname";
-            txtFullname.Size = new Size(474, 39);
+            txtFullname.Size = new Size(293, 27);
             txtFullname.TabIndex = 1;
             // 
             // btnConfirm
             // 
-            btnConfirm.Location = new Point(304, 374);
-            btnConfirm.Margin = new Padding(5, 5, 5, 5);
+            btnConfirm.Location = new Point(187, 234);
             btnConfirm.Name = "btnConfirm";
-            btnConfirm.Size = new Size(153, 46);
+            btnConfirm.Size = new Size(94, 29);
             btnConfirm.TabIndex = 2;
             btnConfirm.Text = "Confirm";
             btnConfirm.UseVisualStyleBackColor = true;
@@ -86,10 +81,9 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(663, 365);
-            btnCancel.Margin = new Padding(5, 5, 5, 5);
+            btnCancel.Location = new Point(408, 228);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(153, 46);
+            btnCancel.Size = new Size(94, 29);
             btnCancel.TabIndex = 2;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
@@ -99,17 +93,18 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(485, 59);
+            label2.Location = new Point(298, 37);
+            label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(142, 45);
+            label2.Size = new Size(90, 28);
             label2.TabIndex = 3;
             label2.Text = "Register";
             // 
             // FormRegister
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1142, 515);
+            ClientSize = new Size(703, 322);
             Controls.Add(label2);
             Controls.Add(btnCancel);
             Controls.Add(btnConfirm);
@@ -117,8 +112,8 @@
             Controls.Add(txtEmail);
             Controls.Add(label3);
             Controls.Add(label1);
-            Margin = new Padding(5, 5, 5, 5);
             Name = "FormRegister";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Register";
             FormClosed += FormRegister_FormClosed;
             ResumeLayout(false);

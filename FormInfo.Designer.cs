@@ -231,6 +231,7 @@
             Controls.Add(panelInfo);
             Controls.Add(panelPassword);
             Name = "FormInfo";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Change Password";
             panelPassword.ResumeLayout(false);
             panelPassword.PerformLayout();

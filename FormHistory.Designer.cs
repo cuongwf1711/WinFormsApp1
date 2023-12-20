@@ -65,6 +65,7 @@
             Controls.Add(btnDel);
             Controls.Add(dataGridView1);
             Name = "FormHistory";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "History";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
