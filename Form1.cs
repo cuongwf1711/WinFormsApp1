@@ -18,6 +18,7 @@ namespace WinFormsApp1
             _user = user;
             adminToolStripMenuItem.Text = _user.FullName;
 
+            httpClient.DefaultRequestHeaders.ExpectContinue = false;
             DownloadPage dp = new DownloadPage(httpClient, _user.UserId)
             {
                 cts = new CancellationTokenSource()

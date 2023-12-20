@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using Azure.Core;
+using System.Collections.Concurrent;
 using System.Net.Http.Headers;
 
 namespace WinFormsApp1
@@ -54,6 +55,19 @@ namespace WinFormsApp1
                 return false;
             }
         }
+        public async IAsyncEnumerable<Range> GetSegmentsAsync(int ConnectionNumber, long FileSize, CancellationToken token)
+        {
+            for (int chunk = 0; chunk < ConnectionNumber; chunk++)
+            {
+                token.ThrowIfCancellationRequested();
+                yield return new Range()
+                {
+                    Start = chunk * (FileSize / ConnectionNumber),
+                    End = chunk == ConnectionNumber - 1 ? FileSize - 1 : (chunk + 1) * (FileSize / ConnectionNumber) - 1
+                };
+            }
+        }
+
         public async Task<bool> DownloadAsync(IProgress<InfoDownloading> progress, HttpClient httpClient, CancellationToken token)
         {
             ConcurrentDictionary<long, string> tempFilesDictionary = new ConcurrentDictionary<long, string>();
@@ -109,19 +123,8 @@ namespace WinFormsApp1
                 }
                 FileSizeUpdated?.Invoke(FileSize);
 
-                List<Range> ListSegments = new List<Range>();
-                for (int chunk = 0; chunk < ConnectionNumber; chunk++)
-                {
-                    token.ThrowIfCancellationRequested();
-                    ListSegments.Add(new Range()
-                    {
-                        Start = chunk * (FileSize / ConnectionNumber),
-                        End = chunk == ConnectionNumber - 1 ? FileSize - 1 : (chunk + 1) * (FileSize / ConnectionNumber) - 1
-                    });
-                }
-
                 long totalBytesRead = 0;
-                await Parallel.ForEachAsync(ListSegments, new ParallelOptions() { CancellationToken = token }, async (segment, token) =>
+                await Parallel.ForEachAsync(GetSegmentsAsync(ConnectionNumber, FileSize, token), new ParallelOptions() { CancellationToken = token }, async (segment, token) =>
                 {
                     token.ThrowIfCancellationRequested();
                     using HttpRequestMessage requestMessage = new HttpRequestMessage
@@ -138,7 +141,7 @@ namespace WinFormsApp1
                         string tempFilePath = Path.GetTempFileName();
                         using (Stream stream = await responseMessage.Content.ReadAsStreamAsync(token))
                         {
-                            using (FileStream outputFileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.Write))
+                            using (FileStream outputFileStream = new FileStream(tempFilePath, FileMode.Create))
                             {
                                 byte[] buffer = new byte[bufferSize];
                                 int bytesRead;
@@ -180,19 +183,20 @@ namespace WinFormsApp1
                         throw new Exception();
                     }
                 });
-                
-                using FileStream destinationStream = new FileStream(LocalPath, FileMode.Append);
-                foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
-                {
-                    token.ThrowIfCancellationRequested();
-                    using (FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open))
-                    {
-                        await tempFileStream.CopyToAsync(destinationStream, token);
-                    }
-                    File.Delete(tempFile.Value);
-                }
 
-                tempFilesDictionary.Clear();
+                using (FileStream destinationStream = new FileStream(LocalPath, FileMode.Append))
+                {
+                    foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
+                    {
+                        token.ThrowIfCancellationRequested();
+                        using (FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open))
+                        {
+                            await tempFileStream.CopyToAsync(destinationStream, token);
+                        }
+                        File.Delete(tempFile.Value);
+                    }
+                }
+                    
                 return true;
             }
             catch
@@ -201,15 +205,17 @@ namespace WinFormsApp1
                 {
                     File.Delete(LocalPath);
                 }
-
+                return false;
+            }
+            finally
+            {
                 foreach (var tempFile in tempFilesDictionary)
                 {
                     File.Delete(tempFile.Value);
                 }
-
                 tempFilesDictionary.Clear();
-                return false;
             }
+
         }
     }
 }

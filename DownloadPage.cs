@@ -65,7 +65,7 @@ namespace WinFormsApp1
         {
             Invoke(() =>
             {
-                labelFileSize.Text = $"File size : {fileSize} b";
+                labelFileSize.Text = $"File size : {fileSize.ToString("N0")} Bytes";
             });
         }
         private string pathSaveDownloading;
@@ -122,7 +122,7 @@ namespace WinFormsApp1
         private void EndDownload(MyDownloadBooster d)
         {
             labelStatus.Text = $"Status : {d.Status}";
-            labelFileSize.Text = $"File size : {d.FileSize} b";
+            labelFileSize.Text = $"File size : {d.FileSize.ToString("N0")} Bytes";
 
             btnDownload.Enabled = true;
             btnCancel.Enabled = false;
