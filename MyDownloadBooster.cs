@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Net.Http.Headers;
 
 namespace WinFormsApp1
@@ -153,7 +152,7 @@ namespace WinFormsApp1
                                     TotalBytesSegment = segment.End - segment.Start + 1,
                             };
 
-                                long updateThreshold = 2 * 1024 * 1024; // 2MB
+                                long updateThreshold = 2 * 1024 * 1024; 
                                 long bytesDownloadedSinceLastUpdate = 0;
 
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
