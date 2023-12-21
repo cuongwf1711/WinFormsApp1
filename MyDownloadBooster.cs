@@ -54,7 +54,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
-        public async IAsyncEnumerable<Range> GetSegmentsAsync(int ConnectionNumber, long FileSize, CancellationToken token)
+        public async IAsyncEnumerable<Range> GetSegmentsAsync(CancellationToken token)
         {
             for (int chunk = 0; chunk < ConnectionNumber; chunk++)
             {
@@ -123,7 +123,7 @@ namespace WinFormsApp1
                 FileSizeUpdated?.Invoke(FileSize);
 
                 long totalBytesRead = 0;
-                await Parallel.ForEachAsync(GetSegmentsAsync(ConnectionNumber, FileSize, token), new ParallelOptions() { CancellationToken = token }, async (segment, token) =>
+                await Parallel.ForEachAsync(GetSegmentsAsync(token), new ParallelOptions() { CancellationToken = token }, async (segment, token) =>
                 {
                     token.ThrowIfCancellationRequested();
                     using HttpRequestMessage requestMessage = new HttpRequestMessage
