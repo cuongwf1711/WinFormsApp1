@@ -49,7 +49,7 @@
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(1200, 885);
-            tabControl1.TabIndex = 0;
+            tabControl1.TabIndex = 1;
             tabControl1.Selecting += tabControl1_Selecting;
             // 
             // NewTab1
@@ -76,7 +76,7 @@
             btnDelTab.Location = new Point(1114, 31);
             btnDelTab.Name = "btnDelTab";
             btnDelTab.Size = new Size(94, 29);
-            btnDelTab.TabIndex = 1;
+            btnDelTab.TabIndex = 2;
             btnDelTab.Text = "Delete tab";
             btnDelTab.UseVisualStyleBackColor = true;
             btnDelTab.Click += btnDelTab_Click;
@@ -116,7 +116,7 @@
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1222, 28);
-            menuStrip1.TabIndex = 3;
+            menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
             // Form1

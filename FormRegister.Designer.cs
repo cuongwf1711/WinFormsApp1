@@ -51,7 +51,7 @@
             txtEmail.Location = new Point(279, 100);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(293, 27);
-            txtEmail.TabIndex = 1;
+            txtEmail.TabIndex = 0;
             // 
             // label3
             // 
@@ -71,7 +71,7 @@
             // 
             // btnConfirm
             // 
-            btnConfirm.Location = new Point(187, 234);
+            btnConfirm.Location = new Point(391, 234);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(94, 29);
             btnConfirm.TabIndex = 2;
@@ -81,10 +81,10 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(408, 228);
+            btnCancel.Location = new Point(182, 234);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(94, 29);
-            btnCancel.TabIndex = 2;
+            btnCancel.TabIndex = 4;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;

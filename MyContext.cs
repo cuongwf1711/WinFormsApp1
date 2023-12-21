@@ -23,7 +23,7 @@ namespace WinFormsApp1
                 UserId = 1,
                 Email = "admine123@gmail.com",
                 FullName = "Test Nguyen",
-                Password = StaticFunc.ComputeSha256Hash("123456Pass")
+                Password = StaticFunc.ComputeSha256Hash("12345Pass")
             });
         }
     }

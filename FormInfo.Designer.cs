@@ -164,7 +164,7 @@
             btnChangePassword.Location = new Point(415, 225);
             btnChangePassword.Name = "btnChangePassword";
             btnChangePassword.Size = new Size(167, 29);
-            btnChangePassword.TabIndex = 2;
+            btnChangePassword.TabIndex = 4;
             btnChangePassword.Text = "Change password";
             btnChangePassword.UseVisualStyleBackColor = true;
             btnChangePassword.Click += btnChangePassword_Click;
@@ -184,7 +184,7 @@
             btnSaveInfo.Location = new Point(256, 225);
             btnSaveInfo.Name = "btnSaveInfo";
             btnSaveInfo.Size = new Size(94, 29);
-            btnSaveInfo.TabIndex = 2;
+            btnSaveInfo.TabIndex = 3;
             btnSaveInfo.Text = "Save";
             btnSaveInfo.UseVisualStyleBackColor = true;
             btnSaveInfo.Click += btnSaveInfo_Click;
@@ -203,7 +203,7 @@
             txtEmail.Name = "txtEmail";
             txtEmail.ReadOnly = true;
             txtEmail.Size = new Size(217, 27);
-            txtEmail.TabIndex = 1;
+            txtEmail.TabIndex = 0;
             // 
             // label2
             // 
