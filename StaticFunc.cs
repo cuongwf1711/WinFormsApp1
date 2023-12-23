@@ -58,10 +58,10 @@ namespace WinFormsApp1
         {
             try
             {
-                string sendMailFrom = "ruivalien@gmail.com";
+                string sendMailFrom = "testpblne@gmail.com";
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 587);
                 SmtpServer.EnableSsl = true;
-                SmtpServer.Credentials = new NetworkCredential(sendMailFrom, "gkvdwwsbqzttwfgg");
+                SmtpServer.Credentials = new NetworkCredential(sendMailFrom, "jelx rpvk wzvh wmsj");
                 SmtpServer.Send(new MailMessage(sendMailFrom, sendMailTo, subJect, body));
                 return true;
             }
