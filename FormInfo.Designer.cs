@@ -157,14 +157,14 @@
             panelInfo.Location = new Point(12, 12);
             panelInfo.Name = "panelInfo";
             panelInfo.Size = new Size(776, 426);
-            panelInfo.TabIndex = 0;
+            panelInfo.TabIndex = 1;
             // 
             // btnChangePassword
             // 
             btnChangePassword.Location = new Point(415, 225);
             btnChangePassword.Name = "btnChangePassword";
             btnChangePassword.Size = new Size(167, 29);
-            btnChangePassword.TabIndex = 4;
+            btnChangePassword.TabIndex = 3;
             btnChangePassword.Text = "Change password";
             btnChangePassword.UseVisualStyleBackColor = true;
             btnChangePassword.Click += btnChangePassword_Click;
@@ -174,7 +174,7 @@
             btnCancel.Location = new Point(120, 225);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(94, 29);
-            btnCancel.TabIndex = 2;
+            btnCancel.TabIndex = 5;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
@@ -184,7 +184,7 @@
             btnSaveInfo.Location = new Point(256, 225);
             btnSaveInfo.Name = "btnSaveInfo";
             btnSaveInfo.Size = new Size(94, 29);
-            btnSaveInfo.TabIndex = 3;
+            btnSaveInfo.TabIndex = 4;
             btnSaveInfo.Text = "Save";
             btnSaveInfo.UseVisualStyleBackColor = true;
             btnSaveInfo.Click += btnSaveInfo_Click;
@@ -194,7 +194,7 @@
             txtFullname.Location = new Point(230, 123);
             txtFullname.Name = "txtFullname";
             txtFullname.Size = new Size(217, 27);
-            txtFullname.TabIndex = 1;
+            txtFullname.TabIndex = 2;
             // 
             // txtEmail
             // 
@@ -203,7 +203,7 @@
             txtEmail.Name = "txtEmail";
             txtEmail.ReadOnly = true;
             txtEmail.Size = new Size(217, 27);
-            txtEmail.TabIndex = 0;
+            txtEmail.TabIndex = 1;
             // 
             // label2
             // 

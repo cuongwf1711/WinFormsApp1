@@ -49,7 +49,7 @@
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(1200, 885);
-            tabControl1.TabIndex = 1;
+            tabControl1.TabIndex = 0;
             tabControl1.Selecting += tabControl1_Selecting;
             // 
             // NewTab1

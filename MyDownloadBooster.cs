@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using Azure.Core;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Net.Http.Headers;
 
 namespace WinFormsApp1
@@ -6,6 +8,7 @@ namespace WinFormsApp1
     public class MyDownloadBooster
     {
         public event Action<long> FileSizeUpdated;
+
         public int MyDownloadBoosterId { get; set; }
         public string UrlFileDownload { get; set; }
         public string LocalPath { get; set; }
@@ -15,6 +18,10 @@ namespace WinFormsApp1
         public long FileSize { get; private set; }
         public int UserId { get; set; }
         public User User { get; set; }
+
+        private const int bufferSize = 1024 * 128;
+        private const long updateThreshold = 2 * 1024 * 1024;
+
         public bool Add()
         {
             try
@@ -31,6 +38,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
+
         public MyDownloadBooster Get()
         {
             using (MyContext Db = new MyContext())
@@ -38,6 +46,7 @@ namespace WinFormsApp1
                 return Db.MyDownloadBoosters.FirstOrDefault(p => p.MyDownloadBoosterId == MyDownloadBoosterId);
             }
         }
+
         public bool Delete()
         {
             try
@@ -54,6 +63,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
+
         public async IAsyncEnumerable<Range> GetSegmentsAsync(CancellationToken token)
         {
             for (int chunk = 0; chunk < ConnectionNumber; chunk++)
@@ -67,55 +77,76 @@ namespace WinFormsApp1
             }
         }
 
+        private async Task<bool> DownloadSingle(IProgress<InfoDownloading> progress, HttpClient httpClient, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+
+            if (FileSize > 0)
+            {
+                FileSizeUpdated?.Invoke(FileSize);
+            }
+
+            using (HttpResponseMessage response = await httpClient.GetAsync(UrlFileDownload, HttpCompletionOption.ResponseHeadersRead, token))
+            {
+                using (Stream stream = await response.Content.ReadAsStreamAsync(token))
+                {
+                    using (FileStream outputFileStream = new FileStream(LocalPath, FileMode.Create))
+                    {
+                        long bytesDownloadedSinceLastUpdate = 0;
+                        byte[] buffer = new byte[bufferSize];
+                        int bytesRead;
+
+                        InfoDownloading infoDownloading = new InfoDownloading()
+                        {
+                            FileName = LocalPath,
+                            FileSize = FileSize,
+                        };
+
+                        while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
+                        {
+                            token.ThrowIfCancellationRequested();
+
+                            infoDownloading.TotalBytesDownloaded += bytesRead;
+                            infoDownloading._bytesSegmentDownloaded += bytesRead;
+                            infoDownloading.TotalBytesSegment += bytesRead;
+
+                            bytesDownloadedSinceLastUpdate += bytesRead;
+                            if (bytesDownloadedSinceLastUpdate >= updateThreshold)
+                            {
+                                infoDownloading.Status = "Downloading";
+                                progress.Report(infoDownloading);
+                                bytesDownloadedSinceLastUpdate = 0;
+                            }
+
+                            await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
+                        }
+
+                        FileSize = infoDownloading.TotalBytesDownloaded;
+
+                        infoDownloading.Status = "Done";
+                        progress.Report(infoDownloading);
+                    }
+                }
+            }
+            return true;
+        }
+
         public async Task<bool> DownloadAsync(IProgress<InfoDownloading> progress, HttpClient httpClient, CancellationToken token)
         {
             ConcurrentDictionary<long, string> tempFilesDictionary = new ConcurrentDictionary<long, string>();
             try
             {
                 token.ThrowIfCancellationRequested();
+
                 using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Head, new Uri(UrlFileDownload));
                 using HttpResponseMessage responseHeader = await httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, token);
-                const int bufferSize = 1024 * 128;
-
-                if (!responseHeader.Headers.AcceptRanges.Contains("bytes"))
+                FileSize = responseHeader.Content.Headers.ContentLength.GetValueOrDefault();
+                
+                if (!responseHeader.Headers.AcceptRanges.Contains("bytes") || ConnectionNumber == 1)
                 {
-                    token.ThrowIfCancellationRequested();
-                    using (HttpResponseMessage response = await httpClient.GetAsync(UrlFileDownload, HttpCompletionOption.ResponseHeadersRead, token))
-                    {
-                        using (Stream stream = await response.Content.ReadAsStreamAsync(token))
-                        {
-                            using (FileStream outputFileStream = new FileStream(LocalPath, FileMode.Create))
-                            {
-                                byte[] buffer = new byte[bufferSize];
-                                int bytesRead;
-
-                                InfoDownloading infoDownloading = new InfoDownloading()
-                                {
-                                    FileName = LocalPath
-                                };
-
-                                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                    infoDownloading.TotalBytesDownloaded += bytesRead;
-                                    infoDownloading._bytesSegmentDownloaded += bytesRead;
-                                    infoDownloading.TotalBytesSegment += bytesRead;
-                                    infoDownloading.Status = "Downloading";
-                                    progress.Report(infoDownloading);
-                                    await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
-                                }
-
-                                FileSize = infoDownloading.TotalBytesDownloaded;
-
-                                infoDownloading.Status = "Done";
-                                progress.Report(infoDownloading);
-                            }
-                        }
-                    }
-                    return true;
+                    return await DownloadSingle(progress, httpClient, token);
                 }
 
-                FileSize = responseHeader.Content.Headers.ContentLength.GetValueOrDefault();
                 if(FileSize <= 0)
                 { 
                     return false; 
@@ -142,6 +173,7 @@ namespace WinFormsApp1
                         {
                             using (FileStream outputFileStream = new FileStream(tempFilePath, FileMode.Create))
                             {
+                                long bytesDownloadedSinceLastUpdate = 0;
                                 byte[] buffer = new byte[bufferSize];
                                 int bytesRead;
 
@@ -150,17 +182,16 @@ namespace WinFormsApp1
                                     FileName = Path.GetFileName(tempFilePath),
                                     FileSize = FileSize,
                                     TotalBytesSegment = segment.End - segment.Start + 1,
-                            };
-
-                                long updateThreshold = 2 * 1024 * 1024; 
-                                long bytesDownloadedSinceLastUpdate = 0;
+                                };
 
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
                                 {
                                     token.ThrowIfCancellationRequested();
+
                                     Interlocked.Add(ref totalBytesRead, bytesRead);
                                     infoDownloading.TotalBytesDownloaded = totalBytesRead;
                                     Interlocked.Add(ref infoDownloading._bytesSegmentDownloaded, bytesRead);
+
                                     bytesDownloadedSinceLastUpdate += bytesRead;
                                     if (bytesDownloadedSinceLastUpdate >= updateThreshold)
                                     {
@@ -182,24 +213,32 @@ namespace WinFormsApp1
                         throw new Exception();
                     }
                 });
-
-                using (FileStream destinationStream = new FileStream(LocalPath, FileMode.Append))
+                
+                foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                 {
-                    foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
+                    token.ThrowIfCancellationRequested();
+                    using (FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open))
                     {
-                        token.ThrowIfCancellationRequested();
-                        using (FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open))
+                        using (FileStream destinationStream = new FileStream(LocalPath, FileMode.Append))
                         {
-                            await tempFileStream.CopyToAsync(destinationStream, token);
+                            byte[] buffer = new byte[bufferSize];
+                            int bytesRead;
+                            while ((bytesRead = await tempFileStream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
+                            {
+                                await destinationStream.WriteAsync(buffer, 0, bytesRead, token);
+                            }
                         }
-                        File.Delete(tempFile.Value);
                     }
+                    File.Delete(tempFile.Value);
                 }
-                    
+
+
                 return true;
             }
-            catch
+            catch (Exception ex) 
             {
+                Debug.WriteLine(ex);
+
                 if (File.Exists(LocalPath))
                 {
                     File.Delete(LocalPath);

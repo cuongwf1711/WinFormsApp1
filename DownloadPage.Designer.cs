@@ -171,7 +171,7 @@
             radioButtonYTBmp4.TabStop = true;
             radioButtonYTBmp4.Text = "Youtube mp4";
             radioButtonYTBmp4.UseVisualStyleBackColor = true;
-            radioButtonYTBmp4.CheckedChanged += radioButtonYTBmp4_CheckedChanged;
+            radioButtonYTBmp4.CheckedChanged += radioButtonYTB_CheckedChanged;
             // 
             // radioButtonYTBmp3
             // 
@@ -183,7 +183,7 @@
             radioButtonYTBmp3.TabStop = true;
             radioButtonYTBmp3.Text = "Youtube mp3";
             radioButtonYTBmp3.UseVisualStyleBackColor = true;
-            radioButtonYTBmp3.CheckedChanged += radioButtonYTBmp3_CheckedChanged;
+            radioButtonYTBmp3.CheckedChanged += radioButtonYTB_CheckedChanged;
             // 
             // radioButtonNone
             // 

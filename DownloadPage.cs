@@ -47,8 +47,7 @@ namespace WinFormsApp1
 
         private void BeginDownload()
         {
-            radioButtonNone.Checked = true;
-
+            groupBox1.Enabled = false;
             btnDownload.Enabled = false;
             btnCancel.Enabled = true;
 
@@ -68,15 +67,11 @@ namespace WinFormsApp1
                 labelFileSize.Text = $"File size : {fileSize.ToString("N0")} Bytes";
             });
         }
-        private string pathSaveDownloading;
-        private async void btnDownload_Click(object sender, EventArgs e)
-        {
-            if (txtLocalpath.Text == string.Empty || txtURL.Text == string.Empty)
-            {
-                MessageBox.Show("Field is missing");
-                return;
-            }
 
+        private string pathSaveDownloading;
+
+        private void CheckFileExist()
+        {
             if (File.Exists(txtLocalpath.Text))
             {
                 DialogResult result = MessageBox.Show("The file already exists. Do you want to add an index to it?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -93,11 +88,42 @@ namespace WinFormsApp1
                         count++;
                         fileName = $"{fileNameWithoutExtension}({count}){extension}";
                     }
+
                     UpdateLocalPath();
                 }
             }
 
+            try
+            {
+                File.Create(txtLocalpath.Text).Dispose();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private async void btnDownload_Click(object sender, EventArgs e)
+        {
+            if (txtLocalpath.Text == string.Empty || txtURL.Text == string.Empty)
+            {
+                MessageBox.Show("Field is missed");
+                return;
+            }
+
+            try
+            {
+                CheckFileExist();
+            }
+            catch
+            {
+                MessageBox.Show("Url download or local path is invalid");
+                radioButtonNone.Enabled = true;
+                return;
+            }
+
             BeginDownload();
+
             pathSaveDownloading = txtLocalpath.Text;
 
             MyDownloadBooster d = new MyDownloadBooster()
@@ -119,11 +145,14 @@ namespace WinFormsApp1
 
             EndDownload(d);
         }
+
         private void EndDownload(MyDownloadBooster d)
         {
             labelStatus.Text = $"Status : {d.Status}";
             labelFileSize.Text = $"File size : {d.FileSize.ToString("N0")} Bytes";
 
+            groupBox1.Enabled = true;
+            radioButtonNone.Checked = true;
             btnDownload.Enabled = true;
             btnCancel.Enabled = false;
 
@@ -145,12 +174,20 @@ namespace WinFormsApp1
             }
 
         }
+
         void updateDownloading(InfoDownloading infoDownloading)
         {
             InfoDownloading obj = dataDownloading.FirstOrDefault(p => p.FileName == infoDownloading.FileName);
             if (infoDownloading.FileName == pathSaveDownloading)
             {
                 labelPercentage.Text = infoDownloading.TotalBytesDownloaded.ToString();
+
+                if(infoDownloading.FileSize > 0) 
+                {
+                    int percent = (int)Math.Round((double)infoDownloading.TotalBytesDownloaded * 100 / infoDownloading.FileSize);
+                    progressBar1.Value = percent;
+                    labelPercentage.Text = $"{percent} %";
+                }
 
                 if (dataDownloading.Count == 0)
                 {
@@ -181,6 +218,7 @@ namespace WinFormsApp1
                 }
             }
         }
+
         private void txtURL_TextChanged(object sender, EventArgs e)
         {
             if (txtURL.Text.Length == 0)
@@ -197,37 +235,41 @@ namespace WinFormsApp1
             cts.Cancel();
         }
 
-        private async void radioButtonYTBmp3_CheckedChanged(object sender, EventArgs e)
+        private async void radioButtonYTB_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButtonYTBmp3.Checked == true)
             {
+                Cursor = Cursors.WaitCursor;
                 YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
                 string nameVideo = await ytbParse.GetName();
                 if (nameVideo.IsNullOrEmpty())
                 {
                     MessageBox.Show("Error");
+                    radioButtonNone.Checked = true;
+                    Cursor = Cursors.Default;
                     return;
                 }
                 txtURL.Text = await ytbParse.GetUrlDownloadMp3();
                 fileName = nameVideo + ".mp3";
                 UpdateLocalPath();
+                Cursor = Cursors.Default;
             }
-        }
-
-        private async void radioButtonYTBmp4_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButtonYTBmp4.Checked == true)
+            else if (radioButtonYTBmp4.Checked == true)
             {
+                Cursor = Cursors.WaitCursor;
                 YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
                 string nameVideo = await ytbParse.GetName();
                 if (nameVideo.IsNullOrEmpty())
                 {
                     MessageBox.Show("Error");
+                    radioButtonNone.Checked = true;
+                    Cursor = Cursors.Default;
                     return;
                 }
                 txtURL.Text = await ytbParse.GetUrlDownloadMp4();
                 fileName = nameVideo + ".mp4";
                 UpdateLocalPath();
+                Cursor = Cursors.Default;
             }
         }
     }

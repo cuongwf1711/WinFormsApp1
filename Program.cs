@@ -7,6 +7,7 @@ namespace WinFormsApp1
         static void Main()
         {
             ApplicationConfiguration.Initialize();
+
             //Application.Run(new Form1(new User
             //{
             //    UserId = 1,
@@ -14,6 +15,7 @@ namespace WinFormsApp1
             //    FullName = "Test Nguyen",
             //    Password = StaticFunc.ComputeSha256Hash("123456Pass")
             //}));
+
             Application.Run(new FormLogin());
         }
     }

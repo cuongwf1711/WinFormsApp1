@@ -1,3 +1,5 @@
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
@@ -88,6 +90,18 @@ namespace WinFormsApp1
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            foreach (TabPage tabPage in tabControl1.TabPages)
+            {
+                foreach (Control control in tabPage.Controls)
+                {
+                    if (control is DownloadPage)
+                    {
+                        ((DownloadPage)control).cts.Cancel();
+                    }
+                    control.Dispose();
+                }
+                tabPage.Dispose();
+            }
             Dispose();
         }
 
