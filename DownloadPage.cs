@@ -163,7 +163,7 @@ namespace WinFormsApp1
                 {
                     Process process = new System.Diagnostics.Process()
                     {
-                        StartInfo = new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = d.LocalPath }
+                        StartInfo = new ProcessStartInfo() { UseShellExecute = true, FileName = d.LocalPath }
                     };
                     process.Start();
                 }
