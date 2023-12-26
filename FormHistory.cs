@@ -18,7 +18,8 @@ namespace WinFormsApp1
             dataGridView1.Columns["UserId"].Visible = false;
             dataGridView1.Columns["MyDownloadBoosterId"].Visible = false;
 
-            label1.Text = $"total: {dataGridView1.Rows.Count}";
+            labelTotal.Text = $"total: {dataGridView1.Rows.Count}";
+            labelSelected.Text = "selected: 0";
         }
 
         private void btnDel_Click(object sender, EventArgs e)
@@ -53,10 +54,23 @@ namespace WinFormsApp1
                 {
                     process.Start();
                 }
-                catch 
+                catch
                 {
                     MessageBox.Show("File path doesn't exist or has been changed");
                 }
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshDgv();
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.ColumnIndex == -1)
+            {
+                labelSelected.Text = $"selected: {dataGridView1.SelectedRows.Count}";
             }
         }
     }

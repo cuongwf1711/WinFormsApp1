@@ -122,7 +122,7 @@ namespace WinFormsApp1
 
             if(!CheckFileExist())
             {
-                radioButtonNone.Enabled = true;
+                radioButtonNone.Checked = true;
                 return;
             }
             
