@@ -214,24 +214,6 @@ namespace WinFormsApp1
                     }
                 });
 
-                //foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
-                //{
-                //    token.ThrowIfCancellationRequested();
-                //    using (FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open))
-                //    {
-                //        using (FileStream destinationStream = new FileStream(LocalPath, FileMode.Append))
-                //        {
-                //            byte[] buffer = new byte[bufferSize];
-                //            int bytesRead;
-                //            while ((bytesRead = await tempFileStream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
-                //            {
-                //                await destinationStream.WriteAsync(buffer, 0, bytesRead, token);
-                //            }
-                //        }
-                //    }
-                //    File.Delete(tempFile.Value);
-                //}
-
                 foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                 {
                     token.ThrowIfCancellationRequested();
@@ -239,7 +221,12 @@ namespace WinFormsApp1
                     {
                         using (FileStream destinationStream = new FileStream(LocalPath, FileMode.Append))
                         {
-                            await tempFileStream.CopyToAsync(destinationStream);
+                            byte[] buffer = new byte[bufferSize];
+                            int bytesRead;
+                            while ((bytesRead = await tempFileStream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
+                            {
+                                await destinationStream.WriteAsync(buffer, 0, bytesRead, token);
+                            }
                         }
                     }
                     File.Delete(tempFile.Value);
@@ -265,7 +252,6 @@ namespace WinFormsApp1
                 }
                 tempFilesDictionary.Clear();
             }
-
         }
     }
 }
