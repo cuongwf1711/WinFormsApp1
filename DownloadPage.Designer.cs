@@ -208,9 +208,9 @@
             labelPercentage.AutoSize = true;
             labelPercentage.Location = new Point(581, 391);
             labelPercentage.Name = "labelPercentage";
-            labelPercentage.Size = new Size(33, 20);
+            labelPercentage.Size = new Size(34, 20);
             labelPercentage.TabIndex = 8;
-            labelPercentage.Text = "0 %";
+            labelPercentage.Text = "... %";
             // 
             // btnCancel
             // 

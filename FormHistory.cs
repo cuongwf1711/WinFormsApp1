@@ -17,6 +17,8 @@ namespace WinFormsApp1
             dataGridView1.DataSource = StaticFunc.ToDataTable(_user.GetMyDownloads());
             dataGridView1.Columns["UserId"].Visible = false;
             dataGridView1.Columns["MyDownloadBoosterId"].Visible = false;
+
+            label1.Text = $"total: {dataGridView1.Rows.Count}";
         }
 
         private void btnDel_Click(object sender, EventArgs e)

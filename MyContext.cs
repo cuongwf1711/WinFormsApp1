@@ -21,7 +21,7 @@ namespace WinFormsApp1
             modelBuilder.Entity<User>().HasData(new User
             {
                 UserId = 1,
-                Email = "admine123@gmail.com",
+                Email = "testaccount@gmail.com",
                 FullName = "Test Nguyen",
                 Password = StaticFunc.ComputeSha256Hash("12345Pass")
             });

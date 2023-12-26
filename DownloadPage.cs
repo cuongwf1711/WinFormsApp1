@@ -70,7 +70,7 @@ namespace WinFormsApp1
 
         private string pathSaveDownloading;
 
-        private void CheckFileExist()
+        private bool CheckFileExist()
         {
             if (File.Exists(txtLocalpath.Text))
             {
@@ -90,16 +90,25 @@ namespace WinFormsApp1
                     }
 
                     UpdateLocalPath();
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
-
-            try
+            else
             {
-                File.Create(txtLocalpath.Text).Dispose();
-            }
-            catch
-            {
-                throw;
+                try
+                {
+                    File.Create(txtLocalpath.Text).Dispose();
+                    return true;
+                }
+                catch
+                {
+                    MessageBox.Show("Url download or local path is invalid");
+                    return false;
+                }
             }
         }
 
@@ -111,17 +120,12 @@ namespace WinFormsApp1
                 return;
             }
 
-            try
+            if(!CheckFileExist())
             {
-                CheckFileExist();
-            }
-            catch
-            {
-                MessageBox.Show("Url download or local path is invalid");
                 radioButtonNone.Enabled = true;
                 return;
             }
-
+            
             BeginDownload();
 
             pathSaveDownloading = txtLocalpath.Text;
