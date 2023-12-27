@@ -5,9 +5,53 @@ namespace WinFormsApp1
     public partial class FormHistory : Form
     {
         private readonly User _user;
+        private ContextMenuStrip cellContextMenu;
+        private DataGridViewCell selectedCell;
+
+        private void InitializeContextMenu()
+        {
+            cellContextMenu = new ContextMenuStrip();
+
+            ToolStripMenuItem itemOpenFile = new ToolStripMenuItem("Open file");
+
+            itemOpenFile.Click += itemOpenFile_Click;
+
+            cellContextMenu.Items.Add(itemOpenFile);
+
+            ToolStripMenuItem itemOpenFolder = new ToolStripMenuItem("Open folder");
+
+            itemOpenFolder.Click += itemOpenFolder_Click;
+
+            cellContextMenu.Items.Add(itemOpenFolder);
+        }
+
+        private void itemOpenFile_Click(object sender, EventArgs e)
+        {
+            if (selectedCell != null)
+            {
+                if (!OpenFile(selectedCell.Value.ToString()))
+                {
+                    MessageBox.Show("Path doesn't exist or has been changed");
+                }
+            }
+        }
+
+        private void itemOpenFolder_Click(object sender, EventArgs e)
+        {
+            if (selectedCell != null)
+            {
+                if (!OpenFile(Path.GetDirectoryName(selectedCell.Value.ToString())))
+                {
+                    MessageBox.Show("Path doesn't exist or has been changed");
+                }
+            }
+        }
+
         public FormHistory(User user)
         {
             InitializeComponent();
+            InitializeContextMenu();
+
             _user = user;
 
             RefreshDgv();
@@ -40,23 +84,30 @@ namespace WinFormsApp1
                 RefreshDgv();
             }
         }
-
-        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private bool OpenFile(string path)
         {
-            if (e.RowIndex >= 0 && (e.ColumnIndex == 1 || e.ColumnIndex == 2))
+            try
             {
-                string value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 Process process = new System.Diagnostics.Process()
                 {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = value }
+                    StartInfo = new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = path }
                 };
-                try
+                process.Start();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == 2)
+            {
+                string value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                if(!OpenFile(value))
                 {
-                    process.Start();
-                }
-                catch
-                {
-                    MessageBox.Show("File path doesn't exist or has been changed");
+                    MessageBox.Show("Path doesn't exist or has been changed");
                 }
             }
         }
@@ -68,9 +119,25 @@ namespace WinFormsApp1
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex == -1)
+            if (e.ColumnIndex == -1)
             {
                 labelSelected.Text = $"selected: {dataGridView1.SelectedRows.Count}";
+            }
+        }
+
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                dataGridView1.ClearSelection();
+                if (e.RowIndex >= 0 && e.ColumnIndex == 2) 
+                {
+                    selectedCell = dataGridView1[e.ColumnIndex, e.RowIndex];
+                    selectedCell.Selected = true;
+
+                    Point relativeMousePosition = dataGridView1.PointToClient(Cursor.Position);
+                    cellContextMenu.Show(dataGridView1, relativeMousePosition);
+                }
             }
         }
     }
