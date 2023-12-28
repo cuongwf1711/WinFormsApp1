@@ -8,7 +8,7 @@ namespace WinFormsApp1
     {
         private readonly HttpClient _httpClient;
         private readonly int _userId;
-        private CancellationTokenSource cts { get; set; }
+        private CancellationTokenSource cts;
 
         private string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
         private string fileName = "";
