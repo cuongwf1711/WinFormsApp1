@@ -21,10 +21,7 @@ namespace WinFormsApp1
             adminToolStripMenuItem.Text = _user.FullName;
 
             httpClient.DefaultRequestHeaders.ExpectContinue = false;
-            DownloadPage dp = new DownloadPage(httpClient, _user.UserId)
-            {
-                cts = new CancellationTokenSource()
-            };
+            DownloadPage dp = new DownloadPage(httpClient, _user.UserId);
             dp.Location = new Point(6, 6);
             NewTab1.Controls.Add(dp);
         }
@@ -33,17 +30,8 @@ namespace WinFormsApp1
         {
             if (tabControl1.SelectedTab.Text != "+")
             {
-                TabPage tab = tabControl1.SelectedTab;
-                
-                foreach (Control control in tab.Controls)
-                {
-                    if(control is DownloadPage)
-                    {
-                        ((DownloadPage)control).cts.Cancel();
-                    }
-                    control.Dispose();
-                }
-                tabControl1.TabPages.Remove(tab);
+                TabPage tabDel = tabControl1.SelectedTab;
+                tabDel.Dispose();
             }
         }
 
@@ -58,10 +46,7 @@ namespace WinFormsApp1
                 newTab.UseVisualStyleBackColor = true;
                 tc.TabPages.Insert(tc.TabCount - 1, newTab);
 
-                DownloadPage dp = new DownloadPage(httpClient, _user.UserId)
-                {
-                    cts = new CancellationTokenSource()
-                };
+                DownloadPage dp = new DownloadPage(httpClient, _user.UserId);
                 dp.Location = new Point(6, 6);
                 newTab.Controls.Add(dp);
 
@@ -85,23 +70,12 @@ namespace WinFormsApp1
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Dispose();
             RefreshFormlogin?.Invoke();
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (TabPage tabPage in tabControl1.TabPages)
-            {
-                foreach (Control control in tabPage.Controls)
-                {
-                    if (control is DownloadPage)
-                    {
-                        ((DownloadPage)control).cts.Cancel();
-                    }
-                    control.Dispose();
-                }
-                tabPage.Dispose();
-            }
             Dispose();
         }
 

@@ -8,7 +8,7 @@ namespace WinFormsApp1
     {
         private readonly HttpClient _httpClient;
         private readonly int _userId;
-        public CancellationTokenSource cts { get; set; }
+        private CancellationTokenSource cts { get; set; }
 
         private string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
         private string fileName = "";
@@ -25,6 +25,13 @@ namespace WinFormsApp1
             cbbConnectNum.Items.AddRange(new object[] { 1, 2, 4, 8, 16, 24 });
             cbbConnectNum.SelectedIndex = 2;
             radioButtonNone.Checked = true;
+
+            Disposed += OnDispose;
+        }
+        private void OnDispose(object sender, EventArgs e)
+        {
+            cts?.Cancel();
+            cts?.Dispose();
         }
 
         void UpdateLocalPath()
@@ -114,6 +121,8 @@ namespace WinFormsApp1
 
         private async void btnDownload_Click(object sender, EventArgs e)
         {
+            cts = new CancellationTokenSource();
+
             if (txtLocalpath.Text == string.Empty || txtURL.Text == string.Empty)
             {
                 MessageBox.Show("Field is missed");
@@ -236,7 +245,8 @@ namespace WinFormsApp1
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            cts.Cancel();
+            cts?.Cancel();
+            cts?.Dispose();
         }
 
         private async void radioButtonYTB_CheckedChanged(object sender, EventArgs e)
