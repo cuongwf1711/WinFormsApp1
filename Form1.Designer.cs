@@ -123,7 +123,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1222, 961);
+            ClientSize = new Size(1222, 1053);
             Controls.Add(menuStrip1);
             Controls.Add(btnDelTab);
             Controls.Add(tabControl1);
