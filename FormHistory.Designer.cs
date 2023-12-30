@@ -42,12 +42,13 @@
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(12, 50);
+            dataGridView1.Location = new Point(10, 38);
+            dataGridView1.Margin = new Padding(3, 2, 3, 2);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(776, 388);
+            dataGridView1.Size = new Size(679, 291);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
@@ -55,52 +56,61 @@
             // 
             // btnDel
             // 
-            btnDel.Location = new Point(244, 12);
+            btnDel.BackColor = Color.MediumTurquoise;
+            btnDel.Location = new Point(214, 9);
+            btnDel.Margin = new Padding(3, 2, 3, 2);
             btnDel.Name = "btnDel";
-            btnDel.Size = new Size(129, 29);
+            btnDel.Size = new Size(113, 22);
             btnDel.TabIndex = 1;
             btnDel.Text = "Delete";
-            btnDel.UseVisualStyleBackColor = true;
+            btnDel.UseVisualStyleBackColor = false;
             btnDel.Click += btnDel_Click;
             // 
             // labelTotal
             // 
             labelTotal.AutoSize = true;
-            labelTotal.Location = new Point(738, 27);
+            labelTotal.BackColor = Color.Transparent;
+            labelTotal.Location = new Point(646, 20);
             labelTotal.Name = "labelTotal";
-            labelTotal.Size = new Size(40, 20);
+            labelTotal.Size = new Size(32, 15);
             labelTotal.TabIndex = 2;
-            labelTotal.Text = "total";
+            labelTotal.Text = "Total";
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(421, 12);
+            btnRefresh.BackColor = Color.MediumTurquoise;
+            btnRefresh.Location = new Point(368, 9);
+            btnRefresh.Margin = new Padding(3, 2, 3, 2);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(133, 29);
+            btnRefresh.Size = new Size(116, 22);
             btnRefresh.TabIndex = 1;
             btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += btnRefresh_Click;
             // 
             // labelSelected
             // 
             labelSelected.AutoSize = true;
-            labelSelected.Location = new Point(12, 27);
+            labelSelected.BackColor = Color.Transparent;
+            labelSelected.Location = new Point(10, 20);
             labelSelected.Name = "labelSelected";
-            labelSelected.Size = new Size(64, 20);
+            labelSelected.Size = new Size(51, 15);
             labelSelected.TabIndex = 2;
-            labelSelected.Text = "selected";
+            labelSelected.Text = "Selected";
             // 
             // FormHistory
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackgroundImage = Properties.Resources._17973908;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(700, 338);
             Controls.Add(labelSelected);
             Controls.Add(labelTotal);
             Controls.Add(btnRefresh);
             Controls.Add(btnDel);
             Controls.Add(dataGridView1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormHistory";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "History";
