@@ -14,6 +14,7 @@ namespace WinFormsApp1
         [MaxLength(255), Required]
         public string FullName { get; set; }
         public ICollection<MyDownloadBooster> MyDownloads { get; set; }
+
         public User()
         {
             MyDownloads = new List<MyDownloadBooster>();
@@ -26,6 +27,7 @@ namespace WinFormsApp1
                 return Db.Users.Include(p => p.MyDownloads).FirstOrDefault(p => p.UserId == UserId).MyDownloads.ToList();
             }
         }
+
         public bool ForgotPassword()
         {
             try
@@ -33,15 +35,18 @@ namespace WinFormsApp1
                 using (MyContext Db = new MyContext())
                 {
                     User user = Db.Users.FirstOrDefault(p => p.Email == Email);
+
                     if(user == null)
                     {
                         return false;
                     }
+
                     string code = StaticFunc.GenerateRandomString(8);
                     if (!StaticFunc.SendEmail(Email, "Recovery password code", code))
                     {
                         return false;
                     }
+
                     user.Password = StaticFunc.ComputeSha256Hash(code);
                     Db.SaveChanges();
                     return true;
@@ -52,6 +57,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
+
         public bool Add()
         {
             try
@@ -83,6 +89,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
+
         public bool Update()
         {
             try
@@ -99,6 +106,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
+
         public User Login()
         {
             using (MyContext Db = new MyContext())
@@ -106,6 +114,7 @@ namespace WinFormsApp1
                 return Db.Users.FirstOrDefault(p => p.Email == Email && p.Password == StaticFunc.ComputeSha256Hash(Password));
             }
         }
+
         public bool ChangePassword(string oldPass, string newPass, string newPassAgain)
         {
             if(newPass != newPassAgain)
@@ -127,6 +136,7 @@ namespace WinFormsApp1
                     {
                         return false;
                     }
+
                     user.Password = StaticFunc.ComputeSha256Hash(newPass);
                     Db.SaveChanges();
                     return true;

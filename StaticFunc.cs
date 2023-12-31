@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace WinFormsApp1
 {
-    public class StaticFunc
+    public static class StaticFunc
     {
         public static string ComputeSha256Hash(string rawData)
         {
@@ -28,6 +28,7 @@ namespace WinFormsApp1
         {
             PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
             DataTable dataTable = new DataTable();
+
             foreach (PropertyDescriptor prop in properties)
             {
                 if(Nullable.GetUnderlyingType(prop.PropertyType) != null)
@@ -39,6 +40,7 @@ namespace WinFormsApp1
                     dataTable.Columns.Add(prop.Name, prop.PropertyType);
                 }
             }
+
             foreach (T item in data)
             {
                 DataRow row = dataTable.NewRow();
@@ -70,6 +72,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
+
         public static string GenerateRandomString(int length)
         {
             const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

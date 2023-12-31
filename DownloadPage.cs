@@ -10,8 +10,11 @@ namespace WinFormsApp1
         private readonly int _userId;
         private CancellationTokenSource cts;
 
-        private string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-        private string fileName = "";
+        private string UrlDownload;
+        private string LocalPath;
+        private string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+        private string FileName;
+
         private BindingList<InfoDownloading> dataDownloading = new BindingList<InfoDownloading>();
 
         public DownloadPage(HttpClient httpClient, int userId)
@@ -28,15 +31,22 @@ namespace WinFormsApp1
 
             Disposed += OnDispose;
         }
+
         private void OnDispose(object sender, EventArgs e)
         {
-            cts?.Cancel();
-            cts?.Dispose();
+            if (cts != null)
+            {
+                if (!cts.IsCancellationRequested)
+                {
+                    cts.Cancel();
+                }
+                cts.Dispose();
+            }
         }
 
-        void UpdateLocalPath()
+        private void UpdateLocalPath()
         {
-            txtLocalpath.Text = Path.Combine(defaultPath, fileName);
+            txtLocalpath.Text = LocalPath = Path.Combine(FolderPath, FileName);
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -47,13 +57,18 @@ namespace WinFormsApp1
             DialogResult result = folderDlg.ShowDialog();
             if (result == DialogResult.OK)
             {
-                defaultPath = folderDlg.SelectedPath;
+                FolderPath = folderDlg.SelectedPath;
                 UpdateLocalPath();
             }
         }
 
         private void BeginDownload()
         {
+            if(radioButtonNone.Checked)
+            {
+                UrlDownload = txtUrlDownload.Text;
+            }
+
             groupBox1.Enabled = false;
             btnDownload.Enabled = false;
             btnCancel.Enabled = true;
@@ -75,25 +90,24 @@ namespace WinFormsApp1
             });
         }
 
-        private string pathSaveDownloading;
-
         private bool CheckFileExist()
         {
-            if (File.Exists(txtLocalpath.Text))
+            if (File.Exists(LocalPath))
             {
-                DialogResult result = MessageBox.Show("The file already exists. Do you want to add an index to it?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("The file already exists. Do you want to add an index to it?", "Confirm"
+                    , MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string extension = Path.GetExtension(fileName);
-                    string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                    string extensionFile = Path.GetExtension(FileName);
+                    string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(FileName);
 
                     int count = 1;
-                    fileName = $"{fileNameWithoutExtension}({count}){extension}";
+                    FileName = $"{fileNameWithoutExtension}({count}){extensionFile}";
 
-                    while (File.Exists(Path.Combine(defaultPath, fileName)))
+                    while (File.Exists(Path.Combine(FolderPath, FileName)))
                     {
                         count++;
-                        fileName = $"{fileNameWithoutExtension}({count}){extension}";
+                        FileName = $"{fileNameWithoutExtension}({count}){extensionFile}";
                     }
 
                     UpdateLocalPath();
@@ -108,7 +122,7 @@ namespace WinFormsApp1
             {
                 try
                 {
-                    File.Create(txtLocalpath.Text).Dispose();
+                    File.Create(LocalPath).Dispose();
                     return true;
                 }
                 catch
@@ -123,7 +137,7 @@ namespace WinFormsApp1
         {
             cts = new CancellationTokenSource();
 
-            if (txtLocalpath.Text == string.Empty || txtURL.Text == string.Empty)
+            if (txtLocalpath.Text.Length == 0 || txtUrlDownload.Text.Length == 0)
             {
                 MessageBox.Show("Field is missed");
                 return;
@@ -137,11 +151,9 @@ namespace WinFormsApp1
             
             BeginDownload();
 
-            pathSaveDownloading = txtLocalpath.Text;
-
             MyDownloadBooster d = new MyDownloadBooster()
             {
-                UrlFileDownload = txtURL.Text,
+                UrlFileDownload = UrlDownload,
                 LocalPath = txtLocalpath.Text,
                 ConnectionNumber = Convert.ToInt32(cbbConnectNum.SelectedItem),
                 DateTime = DateTime.Now,
@@ -153,8 +165,8 @@ namespace WinFormsApp1
             await Task.Run(async () =>
             {
                 d.Status = await d.DownloadAsync(progress, _httpClient, cts.Token);
+                d.Add();
             });
-            d.Add();
 
             EndDownload(d);
         }
@@ -191,7 +203,7 @@ namespace WinFormsApp1
         void updateDownloading(InfoDownloading infoDownloading)
         {
             InfoDownloading obj = dataDownloading.FirstOrDefault(p => p.FileName == infoDownloading.FileName);
-            if (infoDownloading.FileName == pathSaveDownloading)
+            if (infoDownloading.FileName == LocalPath)
             {
                 labelPercentage.Text = infoDownloading.TotalBytesDownloaded.ToString();
 
@@ -234,12 +246,13 @@ namespace WinFormsApp1
 
         private void txtURL_TextChanged(object sender, EventArgs e)
         {
-            if (txtURL.Text.Length == 0)
+            if (txtUrlDownload.Text.Length == 0)
             {
                 txtLocalpath.Text = string.Empty;
                 return;
             }
-            fileName = Path.GetFileName(txtURL.Text);
+            FileName = Path.GetFileName(txtUrlDownload.Text);
+            UrlDownload = txtUrlDownload.Text;
             UpdateLocalPath();
         }
 
@@ -254,7 +267,7 @@ namespace WinFormsApp1
             if (radioButtonYTBmp3.Checked == true)
             {
                 Cursor = Cursors.WaitCursor;
-                YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
+                YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtUrlDownload.Text };
                 string nameVideo = await ytbParse.GetName();
                 if (nameVideo.IsNullOrEmpty())
                 {
@@ -263,15 +276,15 @@ namespace WinFormsApp1
                     Cursor = Cursors.Default;
                     return;
                 }
-                txtURL.Text = await ytbParse.GetUrlDownloadMp3();
-                fileName = nameVideo + ".mp3";
+                UrlDownload = await ytbParse.GetUrlDownloadMp3();
+                FileName = nameVideo + ".mp3";
                 UpdateLocalPath();
                 Cursor = Cursors.Default;
             }
             else if (radioButtonYTBmp4.Checked == true)
             {
                 Cursor = Cursors.WaitCursor;
-                YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtURL.Text };
+                YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtUrlDownload.Text };
                 string nameVideo = await ytbParse.GetName();
                 if (nameVideo.IsNullOrEmpty())
                 {
@@ -280,10 +293,14 @@ namespace WinFormsApp1
                     Cursor = Cursors.Default;
                     return;
                 }
-                txtURL.Text = await ytbParse.GetUrlDownloadMp4();
-                fileName = nameVideo + ".mp4";
+                UrlDownload = await ytbParse.GetUrlDownloadMp4();
+                FileName = nameVideo + ".mp4";
                 UpdateLocalPath();
                 Cursor = Cursors.Default;
+            }
+            else if (radioButtonNone.Checked == true)
+            {
+                txtURL_TextChanged(sender, e);
             }
         }
     }

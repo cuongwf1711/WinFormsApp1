@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 
@@ -79,13 +78,6 @@ namespace WinFormsApp1
 
         private async Task<bool> DownloadSingle(IProgress<InfoDownloading> progress, HttpClient httpClient, CancellationToken token)
         {
-            token.ThrowIfCancellationRequested();
-
-            if (FileSize > 0)
-            {
-                FileSizeUpdated?.Invoke(FileSize);
-            }
-
             using (HttpResponseMessage response = await httpClient.GetAsync(UrlFileDownload, HttpCompletionOption.ResponseHeadersRead, token))
             {
                 using (Stream stream = await response.Content.ReadAsStreamAsync(token))
@@ -104,8 +96,6 @@ namespace WinFormsApp1
 
                         while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
                         {
-                            token.ThrowIfCancellationRequested();
-
                             infoDownloading.TotalBytesDownloaded += bytesRead;
                             infoDownloading._bytesSegmentDownloaded += bytesRead;
                             infoDownloading.TotalBytesSegment += bytesRead;
@@ -128,6 +118,7 @@ namespace WinFormsApp1
                     }
                 }
             }
+
             return true;
         }
 
@@ -136,27 +127,24 @@ namespace WinFormsApp1
             ConcurrentDictionary<long, string> tempFilesDictionary = new ConcurrentDictionary<long, string>();
             try
             {
-                token.ThrowIfCancellationRequested();
-
                 using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Head, new Uri(UrlFileDownload));
                 using HttpResponseMessage responseHeader = await httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, token);
+
                 FileSize = responseHeader.Content.Headers.ContentLength.GetValueOrDefault();
-                
+                if (FileSize <= 0)
+                {
+                    return false;
+                }
+                FileSizeUpdated?.Invoke(FileSize);
+
                 if (!responseHeader.Headers.AcceptRanges.Contains("bytes") || ConnectionNumber == 1)
                 {
                     return await DownloadSingle(progress, httpClient, token);
                 }
 
-                if(FileSize <= 0)
-                { 
-                    return false; 
-                }
-                FileSizeUpdated?.Invoke(FileSize);
-
                 long totalBytesRead = 0;
                 await Parallel.ForEachAsync(GetSegmentsAsync(token), new ParallelOptions() { CancellationToken = token }, async (segment, token) =>
                 {
-                    token.ThrowIfCancellationRequested();
                     using HttpRequestMessage requestMessage = new HttpRequestMessage
                     {
                         Method = HttpMethod.Get,
@@ -167,7 +155,6 @@ namespace WinFormsApp1
                     using HttpResponseMessage responseMessage = await httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, token);
                     if (responseMessage.IsSuccessStatusCode)
                     {
-                        token.ThrowIfCancellationRequested();
                         string tempFilePath = Path.GetTempFileName();
                         using (Stream stream = await responseMessage.Content.ReadAsStreamAsync(token))
                         {
@@ -186,8 +173,6 @@ namespace WinFormsApp1
 
                                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
                                 {
-                                    token.ThrowIfCancellationRequested();
-
                                     Interlocked.Add(ref totalBytesRead, bytesRead);
                                     infoDownloading.TotalBytesDownloaded = totalBytesRead;
                                     Interlocked.Add(ref infoDownloading._bytesSegmentDownloaded, bytesRead);
@@ -199,6 +184,7 @@ namespace WinFormsApp1
                                         progress.Report(infoDownloading);
                                         bytesDownloadedSinceLastUpdate = 0;
                                     }
+
                                     await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
                                 }
 
@@ -210,13 +196,12 @@ namespace WinFormsApp1
                     }
                     else
                     {
-                        throw new Exception();
+                        throw new Exception("Error response");
                     }
                 });
 
                 foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                 {
-                    token.ThrowIfCancellationRequested();
                     using (FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open))
                     {
                         using (FileStream destinationStream = new FileStream(LocalPath, FileMode.Append))
@@ -242,6 +227,7 @@ namespace WinFormsApp1
                 {
                     File.Delete(LocalPath);
                 }
+
                 return false;
             }
             finally

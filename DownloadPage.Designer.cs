@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            txtURL = new TextBox();
+            txtUrlDownload = new TextBox();
             btnDownload = new Button();
             label2 = new Label();
             txtLocalpath = new TextBox();
@@ -62,14 +62,13 @@
             label1.TabIndex = 0;
             label1.Text = "URL to download:";
             // 
-            // txtURL
+            // txtUrlDownload
             // 
-            txtURL.Location = new Point(170, 69);
-            txtURL.Margin = new Padding(3, 2, 3, 2);
-            txtURL.Name = "txtURL";
-            txtURL.Size = new Size(830, 23);
-            txtURL.TabIndex = 0;
-            txtURL.TextChanged += txtURL_TextChanged;
+            txtUrlDownload.Location = new Point(194, 92);
+            txtUrlDownload.Name = "txtUrlDownload";
+            txtUrlDownload.Size = new Size(948, 27);
+            txtUrlDownload.TabIndex = 0;
+            txtUrlDownload.TextChanged += txtURL_TextChanged;
             // 
             // btnDownload
             // 
@@ -147,15 +146,13 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(961, 254);
+            dataGridView1.Size = new Size(1098, 338);
             dataGridView1.TabIndex = 4;
             // 
             // label4
             // 
             label4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label4.AutoSize = true;
-            label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI", 25.8000011F, FontStyle.Bold);
             label4.ForeColor = SystemColors.Highlight;
             label4.Location = new Point(346, 9);
@@ -293,7 +290,7 @@
             Controls.Add(btnBrowse);
             Controls.Add(btnDownload);
             Controls.Add(txtLocalpath);
-            Controls.Add(txtURL);
+            Controls.Add(txtUrlDownload);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -310,7 +307,7 @@
         #endregion
 
         private Label label1;
-        private TextBox txtURL;
+        private TextBox txtUrlDownload;
         private Button btnDownload;
         private Label label2;
         private TextBox txtLocalpath;
