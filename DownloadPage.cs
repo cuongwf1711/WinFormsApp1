@@ -8,14 +8,16 @@ namespace WinFormsApp1
     {
         private readonly HttpClient _httpClient;
         private readonly int _userId;
+
         private CancellationTokenSource cts;
 
         private string UrlDownload;
         private string LocalPath;
         private string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-        private string FileName;
+        private string FileName = "";
+        private string YoutubeString;
 
-        private BindingList<InfoDownloading> dataDownloading = new BindingList<InfoDownloading>();
+        private BindingList<InfoSegmentDownloading> dataDownloading = new BindingList<InfoSegmentDownloading>();
 
         public DownloadPage(HttpClient httpClient, int userId)
         {
@@ -25,8 +27,10 @@ namespace WinFormsApp1
             InitializeComponent();
 
             dataGridView1.DataSource = dataDownloading;
+
             cbbConnectNum.Items.AddRange(new object[] { 1, 2, 4, 8, 16, 24 });
             cbbConnectNum.SelectedIndex = 2;
+
             radioButtonNone.Checked = true;
 
             Disposed += OnDispose;
@@ -53,8 +57,8 @@ namespace WinFormsApp1
         {
             FolderBrowserDialog folderDlg = new FolderBrowserDialog();
             folderDlg.ShowNewFolderButton = true;
-
             DialogResult result = folderDlg.ShowDialog();
+
             if (result == DialogResult.OK)
             {
                 FolderPath = folderDlg.SelectedPath;
@@ -73,11 +77,9 @@ namespace WinFormsApp1
             btnDownload.Enabled = false;
             btnCancel.Enabled = true;
 
-
             labelStatus.Text = "Status : Downloading";
             labelFileSize.Text = "File size : ...";
-            labelPercentage.Text = "0 %";
-            progressBar1.Value = 0;
+            myProgressBar1.Value = 0;
 
             dataDownloading.Clear();
         }
@@ -96,6 +98,7 @@ namespace WinFormsApp1
             {
                 DialogResult result = MessageBox.Show("The file already exists. Do you want to add an index to it?", "Confirm"
                     , MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
                 if (result == DialogResult.Yes)
                 {
                     string extensionFile = Path.GetExtension(FileName);
@@ -135,8 +138,6 @@ namespace WinFormsApp1
 
         private async void btnDownload_Click(object sender, EventArgs e)
         {
-            cts = new CancellationTokenSource();
-
             if (txtLocalpath.Text.Length == 0 || txtUrlDownload.Text.Length == 0)
             {
                 MessageBox.Show("Field is missed");
@@ -161,10 +162,16 @@ namespace WinFormsApp1
             };
             d.FileSizeUpdated += UpdateFileSize;
 
-            Progress<InfoDownloading> progress = new Progress<InfoDownloading>(updateDownloading);
+            Progress<InfoSegmentDownloading> progress = new Progress<InfoSegmentDownloading>(updateDownloading);
+            cts = new CancellationTokenSource();
+
             await Task.Run(async () =>
             {
                 d.Status = await d.DownloadAsync(progress, _httpClient, cts.Token);
+                if (radioButtonYTBmp3.Checked == true || radioButtonYTBmp4.Checked == true)
+                {
+                    d.UrlFileDownload = YoutubeString;
+                }
                 d.Add();
             });
 
@@ -186,10 +193,12 @@ namespace WinFormsApp1
                 DialogResult result = MessageBox.Show($"Downloaded successfully at: {d.LocalPath}, open it", "Done", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
                 {
-                    Process process = new System.Diagnostics.Process()
-                    {
-                        StartInfo = new ProcessStartInfo() { UseShellExecute = true, FileName = d.LocalPath }
-                    };
+                    ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                    startInfo.FileName = d.LocalPath;
+                    startInfo.UseShellExecute = true;
+
+                    Process process = new Process();
+                    process.StartInfo = startInfo;
                     process.Start();
                 }
             }
@@ -200,18 +209,16 @@ namespace WinFormsApp1
 
         }
 
-        void updateDownloading(InfoDownloading infoDownloading)
+        void updateDownloading(InfoSegmentDownloading infoDownloading)
         {
-            InfoDownloading obj = dataDownloading.FirstOrDefault(p => p.FileName == infoDownloading.FileName);
+            InfoSegmentDownloading obj = dataDownloading.FirstOrDefault(p => p.FileName == infoDownloading.FileName);
             if (infoDownloading.FileName == LocalPath)
             {
-                labelPercentage.Text = infoDownloading.TotalBytesDownloaded.ToString();
 
                 if(infoDownloading.FileSize > 0) 
                 {
                     int percent = (int)Math.Round((double)infoDownloading.TotalBytesDownloaded * 100 / infoDownloading.FileSize);
-                    progressBar1.Value = percent;
-                    labelPercentage.Text = $"{percent} %";
+                    myProgressBar1.Value = percent;
                 }
 
                 if (dataDownloading.Count == 0)
@@ -228,8 +235,7 @@ namespace WinFormsApp1
             else
             {
                 int percent = (int)(infoDownloading.TotalBytesDownloaded * 100 / infoDownloading.FileSize);
-                progressBar1.Value = percent;
-                labelPercentage.Text = $"{percent} %";
+                myProgressBar1.Value = percent;
 
                 if (obj != null)
                 {
@@ -244,15 +250,15 @@ namespace WinFormsApp1
             }
         }
 
-        private void txtURL_TextChanged(object sender, EventArgs e)
+        private void txtUrlDownload_TextChanged(object sender, EventArgs e)
         {
             if (txtUrlDownload.Text.Length == 0)
             {
                 txtLocalpath.Text = string.Empty;
                 return;
             }
+
             FileName = Path.GetFileName(txtUrlDownload.Text);
-            UrlDownload = txtUrlDownload.Text;
             UpdateLocalPath();
         }
 
@@ -264,10 +270,11 @@ namespace WinFormsApp1
 
         private async void radioButtonYTB_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButtonYTBmp3.Checked == true)
+            if (radioButtonYTBmp3.Checked == true || radioButtonYTBmp4.Checked == true)
             {
                 Cursor = Cursors.WaitCursor;
-                YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtUrlDownload.Text };
+
+                YtbParse ytbParse = new YtbParse(txtUrlDownload.Text);
                 string nameVideo = await ytbParse.GetName();
                 if (nameVideo.IsNullOrEmpty())
                 {
@@ -276,31 +283,27 @@ namespace WinFormsApp1
                     Cursor = Cursors.Default;
                     return;
                 }
-                UrlDownload = await ytbParse.GetUrlDownloadMp3();
-                FileName = nameVideo + ".mp3";
-                UpdateLocalPath();
-                Cursor = Cursors.Default;
-            }
-            else if (radioButtonYTBmp4.Checked == true)
-            {
-                Cursor = Cursors.WaitCursor;
-                YtbParse ytbParse = new YtbParse() { UrlOfVideo = txtUrlDownload.Text };
-                string nameVideo = await ytbParse.GetName();
-                if (nameVideo.IsNullOrEmpty())
+
+                string extensionFile = "";
+                if (radioButtonYTBmp3.Checked == true)
                 {
-                    MessageBox.Show("Error");
-                    radioButtonNone.Checked = true;
-                    Cursor = Cursors.Default;
-                    return;
+                    extensionFile = ".mp3";
                 }
-                UrlDownload = await ytbParse.GetUrlDownloadMp4();
-                FileName = nameVideo + ".mp4";
+                else if (radioButtonYTBmp4.Checked == true)
+                {
+                    extensionFile = ".mp4";
+                }
+
+                UrlDownload = await ytbParse.GetUrlDownload(extensionFile);
+                FileName = nameVideo + extensionFile;
                 UpdateLocalPath();
+
                 Cursor = Cursors.Default;
+                YoutubeString = ytbParse.UrlOfVideo;
             }
             else if (radioButtonNone.Checked == true)
             {
-                txtURL_TextChanged(sender, e);
+                txtUrlDownload_TextChanged(sender, e);
             }
         }
     }

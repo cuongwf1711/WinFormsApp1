@@ -31,11 +31,7 @@ namespace WinFormsApp1
 
             foreach (PropertyDescriptor prop in properties)
             {
-                if(Nullable.GetUnderlyingType(prop.PropertyType) != null)
-                {
-                    dataTable.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType));
-                }
-                else if (prop.PropertyType.IsValueType || prop.PropertyType == typeof(string))
+                if (prop.PropertyType.IsValueType || prop.PropertyType == typeof(string))
                 {
                     dataTable.Columns.Add(prop.Name, prop.PropertyType);
                 }

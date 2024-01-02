@@ -5,23 +5,17 @@ namespace WinFormsApp1
     public partial class FormHistory : Form
     {
         private readonly User _user;
-        private ContextMenuStrip cellContextMenu;
+        private readonly ContextMenuStrip cellContextMenu = new ContextMenuStrip();
         private DataGridViewCell selectedCell;
 
         private void InitializeContextMenu()
         {
-            cellContextMenu = new ContextMenuStrip();
-
             ToolStripMenuItem itemOpenFile = new ToolStripMenuItem("Open file");
-
             itemOpenFile.Click += itemOpenFile_Click;
-
             cellContextMenu.Items.Add(itemOpenFile);
 
             ToolStripMenuItem itemOpenFolder = new ToolStripMenuItem("Open folder");
-
             itemOpenFolder.Click += itemOpenFolder_Click;
-
             cellContextMenu.Items.Add(itemOpenFolder);
         }
 
@@ -49,13 +43,14 @@ namespace WinFormsApp1
 
         public FormHistory(User user)
         {
+            _user = user;
+
             InitializeComponent();
             InitializeContextMenu();
 
-            _user = user;
-
             RefreshDgv();
         }
+
         private void RefreshDgv()
         {
             dataGridView1.DataSource = StaticFunc.ToDataTable(_user.GetMyDownloads());
@@ -84,15 +79,19 @@ namespace WinFormsApp1
                 RefreshDgv();
             }
         }
+
         private bool OpenFile(string path)
         {
             try
             {
-                Process process = new System.Diagnostics.Process()
-                {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = path }
-                };
+                ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                startInfo.FileName = path;
+                startInfo.UseShellExecute = true;
+
+                Process process = new Process();
+                process.StartInfo = startInfo;
                 process.Start();
+
                 return true;
             }
             catch
@@ -100,6 +99,7 @@ namespace WinFormsApp1
                 return false;
             }
         }
+
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == 2)

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRegister));
             label1 = new Label();
             txtEmail = new TextBox();
             label3 = new Label();
@@ -39,72 +40,73 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(113, 100);
+            label1.Anchor = AnchorStyles.None;
+            label1.BackColor = Color.Transparent;
+            label1.Location = new Point(184, 108);
             label1.Name = "label1";
-            label1.Size = new Size(46, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Email";
+            label1.Size = new Size(63, 28);
+            label1.Text = "Email:";
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(279, 100);
+            txtEmail.Anchor = AnchorStyles.None;
+            txtEmail.Location = new Point(267, 105);
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(293, 27);
+            txtEmail.Size = new Size(431, 34);
             txtEmail.TabIndex = 0;
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(113, 159);
+            label3.Anchor = AnchorStyles.None;
+            label3.BackColor = Color.Transparent;
+            label3.Location = new Point(164, 200);
             label3.Name = "label3";
-            label3.Size = new Size(69, 20);
-            label3.TabIndex = 0;
-            label3.Text = "Fullname";
+            label3.Size = new Size(95, 28);
+            label3.Text = "Fullname:";
             // 
             // txtFullname
             // 
-            txtFullname.Location = new Point(279, 159);
+            txtFullname.Anchor = AnchorStyles.None;
+            txtFullname.Location = new Point(267, 197);
             txtFullname.Name = "txtFullname";
-            txtFullname.Size = new Size(293, 27);
+            txtFullname.Size = new Size(431, 34);
             txtFullname.TabIndex = 1;
             // 
             // btnConfirm
             // 
-            btnConfirm.Location = new Point(391, 234);
+            btnConfirm.Anchor = AnchorStyles.None;
+            btnConfirm.Location = new Point(440, 274);
             btnConfirm.Name = "btnConfirm";
-            btnConfirm.Size = new Size(94, 29);
+            btnConfirm.Size = new Size(120, 40);
             btnConfirm.TabIndex = 2;
             btnConfirm.Text = "Confirm";
-            btnConfirm.UseVisualStyleBackColor = true;
             btnConfirm.Click += btnConfirm_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(182, 234);
+            btnCancel.Anchor = AnchorStyles.None;
+            btnCancel.Location = new Point(312, 274);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(94, 29);
-            btnCancel.TabIndex = 4;
+            btnCancel.Size = new Size(120, 40);
+            btnCancel.TabIndex = 3;
             btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(298, 37);
-            label2.Margin = new Padding(2, 0, 2, 0);
+            label2.Anchor = AnchorStyles.None;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(378, 9);
             label2.Name = "label2";
-            label2.Size = new Size(90, 28);
-            label2.TabIndex = 3;
+            label2.Size = new Size(153, 54);
             label2.Text = "Register";
             // 
             // FormRegister
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(703, 322);
+            BackgroundImage = Properties.Resources.background;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(882, 353);
             Controls.Add(label2);
             Controls.Add(btnCancel);
             Controls.Add(btnConfirm);
@@ -112,6 +114,9 @@
             Controls.Add(txtEmail);
             Controls.Add(label3);
             Controls.Add(label1);
+            DoubleBuffered = true;
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormRegister";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Register";

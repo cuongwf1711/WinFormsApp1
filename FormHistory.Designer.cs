@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormHistory));
             dataGridView1 = new DataGridView();
             btnDel = new Button();
             labelTotal = new Label();
@@ -40,77 +41,69 @@
             // 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.Anchor = AnchorStyles.None;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.BackgroundColor = SystemColors.GradientActiveCaption;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(10, 38);
-            dataGridView1.Margin = new Padding(3, 2, 3, 2);
+            dataGridView1.Location = new Point(13, 67);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(679, 291);
-            dataGridView1.TabIndex = 0;
+            dataGridView1.Size = new Size(1156, 478);
             dataGridView1.CellClick += dataGridView1_CellClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.CellMouseDown += dataGridView1_CellMouseDown;
             // 
             // btnDel
             // 
-            btnDel.BackColor = Color.MediumTurquoise;
-            btnDel.Location = new Point(214, 9);
-            btnDel.Margin = new Padding(3, 2, 3, 2);
+            btnDel.Anchor = AnchorStyles.None;
+            btnDel.BackColor = Color.White;
+            btnDel.Location = new Point(394, 13);
             btnDel.Name = "btnDel";
-            btnDel.Size = new Size(113, 22);
-            btnDel.TabIndex = 1;
+            btnDel.Size = new Size(150, 40);
             btnDel.Text = "Delete";
-            btnDel.UseVisualStyleBackColor = false;
             btnDel.Click += btnDel_Click;
             // 
             // labelTotal
             // 
-            labelTotal.AutoSize = true;
+            labelTotal.Anchor = AnchorStyles.None;
             labelTotal.BackColor = Color.Transparent;
-            labelTotal.Location = new Point(646, 20);
+            labelTotal.Location = new Point(13, 35);
             labelTotal.Name = "labelTotal";
-            labelTotal.Size = new Size(32, 15);
-            labelTotal.TabIndex = 2;
+            labelTotal.Size = new Size(54, 28);
             labelTotal.Text = "Total";
             // 
             // btnRefresh
             // 
-            btnRefresh.BackColor = Color.MediumTurquoise;
-            btnRefresh.Location = new Point(368, 9);
-            btnRefresh.Margin = new Padding(3, 2, 3, 2);
+            btnRefresh.Anchor = AnchorStyles.None;
+            btnRefresh.BackColor = Color.White;
+            btnRefresh.Location = new Point(579, 13);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(116, 22);
-            btnRefresh.TabIndex = 1;
+            btnRefresh.Size = new Size(150, 40);
             btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += btnRefresh_Click;
             // 
             // labelSelected
             // 
-            labelSelected.AutoSize = true;
+            labelSelected.Anchor = AnchorStyles.None;
             labelSelected.BackColor = Color.Transparent;
-            labelSelected.Location = new Point(10, 20);
+            labelSelected.Location = new Point(13, 549);
             labelSelected.Name = "labelSelected";
-            labelSelected.Size = new Size(51, 15);
-            labelSelected.TabIndex = 2;
+            labelSelected.Size = new Size(86, 28);
             labelSelected.Text = "Selected";
             // 
             // FormHistory
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources._17973908;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(700, 338);
+            ClientSize = new Size(1182, 599);
             Controls.Add(labelSelected);
             Controls.Add(labelTotal);
             Controls.Add(btnRefresh);
             Controls.Add(btnDel);
             Controls.Add(dataGridView1);
-            Margin = new Padding(3, 2, 3, 2);
+            DoubleBuffered = true;
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormHistory";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "History";

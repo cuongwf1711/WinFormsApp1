@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
-            label1 = new Label();
-            label2 = new Label();
             txtEmail = new TextBox();
             txtPassword = new TextBox();
             btnRegister = new Button();
@@ -39,111 +37,116 @@
             pictureBoxHide = new PictureBox();
             pictureBoxShow = new PictureBox();
             label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBoxHide).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxShow).BeginInit();
             SuspendLayout();
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(54, 98);
-            label1.Name = "label1";
-            label1.Size = new Size(46, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Email";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(54, 166);
-            label2.Name = "label2";
-            label2.Size = new Size(70, 20);
-            label2.TabIndex = 0;
-            label2.Text = "Password";
-            // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(162, 95);
+            txtEmail.Anchor = AnchorStyles.None;
+            txtEmail.Location = new Point(247, 103);
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(441, 27);
+            txtEmail.Size = new Size(441, 34);
             txtEmail.TabIndex = 0;
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(162, 154);
+            txtPassword.Anchor = AnchorStyles.None;
+            txtPassword.Location = new Point(247, 176);
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(441, 27);
+            txtPassword.Size = new Size(441, 34);
             txtPassword.TabIndex = 1;
             txtPassword.UseSystemPasswordChar = true;
             // 
             // btnRegister
             // 
-            btnRegister.Location = new Point(207, 231);
+            btnRegister.Anchor = AnchorStyles.None;
+            btnRegister.Location = new Point(247, 246);
             btnRegister.Name = "btnRegister";
-            btnRegister.Size = new Size(94, 29);
+            btnRegister.Size = new Size(105, 40);
             btnRegister.TabIndex = 4;
             btnRegister.Text = "Register";
-            btnRegister.UseVisualStyleBackColor = true;
             btnRegister.Click += btnRegister_Click;
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(407, 231);
+            btnLogin.Anchor = AnchorStyles.None;
+            btnLogin.Location = new Point(553, 246);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(94, 29);
+            btnLogin.Size = new Size(105, 40);
             btnLogin.TabIndex = 2;
             btnLogin.Text = "Login";
-            btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
             // 
             // btnForgot
             // 
-            btnForgot.Location = new Point(307, 231);
+            btnForgot.Anchor = AnchorStyles.None;
+            btnForgot.Location = new Point(396, 246);
             btnForgot.Name = "btnForgot";
-            btnForgot.Size = new Size(94, 29);
+            btnForgot.Size = new Size(105, 40);
             btnForgot.TabIndex = 3;
             btnForgot.Text = "Forgot";
-            btnForgot.UseVisualStyleBackColor = true;
             btnForgot.Click += btnForgot_Click;
             // 
             // pictureBoxHide
             // 
+            pictureBoxHide.Anchor = AnchorStyles.None;
+            pictureBoxHide.BackColor = Color.Transparent;
             pictureBoxHide.Image = (Image)resources.GetObject("pictureBoxHide.Image");
-            pictureBoxHide.Location = new Point(633, 154);
+            pictureBoxHide.Location = new Point(694, 176);
             pictureBoxHide.Name = "pictureBoxHide";
-            pictureBoxHide.Size = new Size(45, 34);
-            pictureBoxHide.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBoxHide.TabIndex = 3;
+            pictureBoxHide.Size = new Size(35, 35);
+            pictureBoxHide.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxHide.TabStop = false;
             pictureBoxHide.Click += pictureBox1_Click;
             // 
             // pictureBoxShow
             // 
+            pictureBoxShow.Anchor = AnchorStyles.None;
+            pictureBoxShow.BackColor = Color.Transparent;
             pictureBoxShow.Image = (Image)resources.GetObject("pictureBoxShow.Image");
-            pictureBoxShow.Location = new Point(633, 154);
+            pictureBoxShow.Location = new Point(694, 176);
             pictureBoxShow.Name = "pictureBoxShow";
-            pictureBoxShow.Size = new Size(45, 34);
-            pictureBoxShow.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBoxShow.TabIndex = 3;
+            pictureBoxShow.Size = new Size(35, 35);
+            pictureBoxShow.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxShow.TabStop = false;
             pictureBoxShow.Click += pictureBox1_Click;
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(315, 32);
-            label3.Margin = new Padding(2, 0, 2, 0);
+            label3.Anchor = AnchorStyles.None;
+            label3.BackColor = Color.Transparent;
+            label3.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(366, 9);
             label3.Name = "label3";
-            label3.Size = new Size(70, 28);
-            label3.TabIndex = 5;
+            label3.Size = new Size(120, 60);
             label3.Text = "Log In";
+            // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.None;
+            label2.BackColor = Color.Transparent;
+            label2.Location = new Point(139, 176);
+            label2.Name = "label2";
+            label2.Size = new Size(102, 34);
+            label2.Text = "Password:";
+            // 
+            // label1
+            // 
+            label1.Anchor = AnchorStyles.None;
+            label1.BackColor = Color.Transparent;
+            label1.Location = new Point(139, 103);
+            label1.Name = "label1";
+            label1.Size = new Size(102, 34);
+            label1.Text = "Email:";
             // 
             // FormLogin
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(845, 489);
+            BackgroundImage = Properties.Resources.background;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(882, 353);
             Controls.Add(label3);
             Controls.Add(btnForgot);
             Controls.Add(btnLogin);
@@ -154,9 +157,11 @@
             Controls.Add(label1);
             Controls.Add(pictureBoxHide);
             Controls.Add(pictureBoxShow);
+            DoubleBuffered = true;
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormLogin";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Login";
             ((System.ComponentModel.ISupportInitialize)pictureBoxHide).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxShow).EndInit();
             ResumeLayout(false);
@@ -164,9 +169,6 @@
         }
 
         #endregion
-
-        private Label label1;
-        private Label label2;
         private TextBox txtEmail;
         private TextBox txtPassword;
         private Button btnRegister;
@@ -175,5 +177,7 @@
         private PictureBox pictureBoxHide;
         private PictureBox pictureBoxShow;
         private Label label3;
+        private Label label2;
+        private Label label1;
     }
 }

@@ -28,17 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormInfo));
             panelPassword = new Panel();
-            panelInfo = new Panel();
-            btnChangePassword = new Button();
-            btnCancel = new Button();
-            btnSaveInfo = new Button();
-            txtFullname = new TextBox();
-            txtEmail = new TextBox();
-            label2 = new Label();
-            label1 = new Label();
             label6 = new Label();
-            btnCancelPassword = new Button();
+            btnCancelPassw = new Button();
             btnConfirmPassword = new Button();
             txtNewPassAgain = new TextBox();
             txtNewPass = new TextBox();
@@ -46,17 +39,27 @@
             label5 = new Label();
             label4 = new Label();
             label3 = new Label();
+            panelInfo = new Panel();
             label7 = new Label();
+            btnChangePassword = new Button();
+            btnCancelInfo = new Button();
+            btnSaveInfo = new Button();
+            txtFullname = new TextBox();
+            txtEmail = new TextBox();
+            label2 = new Label();
+            label1 = new Label();
             panelPassword.SuspendLayout();
             panelInfo.SuspendLayout();
             SuspendLayout();
             // 
             // panelPassword
             // 
-            panelPassword.BackColor = Color.PaleTurquoise;
-            panelPassword.Controls.Add(panelInfo);
+            panelPassword.Anchor = AnchorStyles.None;
+            panelPassword.BackColor = SystemColors.Control;
+            panelPassword.BackgroundImage = Properties.Resources.background;
+            panelPassword.BackgroundImageLayout = ImageLayout.Stretch;
             panelPassword.Controls.Add(label6);
-            panelPassword.Controls.Add(btnCancelPassword);
+            panelPassword.Controls.Add(btnCancelPassw);
             panelPassword.Controls.Add(btnConfirmPassword);
             panelPassword.Controls.Add(txtNewPassAgain);
             panelPassword.Controls.Add(txtNewPass);
@@ -64,210 +67,192 @@
             panelPassword.Controls.Add(label5);
             panelPassword.Controls.Add(label4);
             panelPassword.Controls.Add(label3);
-            panelPassword.Location = new Point(-1, -1);
-            panelPassword.Margin = new Padding(3, 2, 3, 2);
+            panelPassword.Location = new Point(0, 0);
             panelPassword.Name = "panelPassword";
-            panelPassword.Size = new Size(635, 299);
-            panelPassword.TabIndex = 0;
+            panelPassword.Size = new Size(885, 355);
+            // 
+            // label6
+            // 
+            label6.Anchor = AnchorStyles.None;
+            label6.BackColor = Color.Transparent;
+            label6.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.Location = new Point(275, 9);
+            label6.Name = "label6";
+            label6.Size = new Size(382, 46);
+            label6.Text = "Change your Password";
+            // 
+            // btnCancelPassw
+            // 
+            btnCancelPassw.Anchor = AnchorStyles.None;
+            btnCancelPassw.Location = new Point(337, 282);
+            btnCancelPassw.Name = "btnCancelPassw";
+            btnCancelPassw.Size = new Size(120, 40);
+            btnCancelPassw.Text = "Cancel";
+            btnCancelPassw.Click += btnCancel_Click;
+            // 
+            // btnConfirmPassword
+            // 
+            btnConfirmPassword.Anchor = AnchorStyles.None;
+            btnConfirmPassword.Location = new Point(465, 282);
+            btnConfirmPassword.Name = "btnConfirmPassword";
+            btnConfirmPassword.Size = new Size(120, 40);
+            btnConfirmPassword.Text = "Confirm";
+            btnConfirmPassword.Click += btnConfirmPassword_Click;
+            // 
+            // txtNewPassAgain
+            // 
+            txtNewPassAgain.Anchor = AnchorStyles.None;
+            txtNewPassAgain.Location = new Point(288, 214);
+            txtNewPassAgain.Name = "txtNewPassAgain";
+            txtNewPassAgain.Size = new Size(438, 34);
+            txtNewPassAgain.UseSystemPasswordChar = true;
+            // 
+            // txtNewPass
+            // 
+            txtNewPass.Anchor = AnchorStyles.None;
+            txtNewPass.Location = new Point(288, 145);
+            txtNewPass.Name = "txtNewPass";
+            txtNewPass.Size = new Size(438, 34);
+            txtNewPass.UseSystemPasswordChar = true;
+            // 
+            // txtOldPass
+            // 
+            txtOldPass.Anchor = AnchorStyles.None;
+            txtOldPass.Location = new Point(288, 82);
+            txtOldPass.Name = "txtOldPass";
+            txtOldPass.Size = new Size(438, 34);
+            txtOldPass.UseSystemPasswordChar = true;
+            // 
+            // label5
+            // 
+            label5.Anchor = AnchorStyles.None;
+            label5.BackColor = Color.Transparent;
+            label5.Location = new Point(84, 217);
+            label5.Name = "label5";
+            label5.Size = new Size(196, 28);
+            label5.Text = "New password again:";
+            // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.None;
+            label4.BackColor = Color.Transparent;
+            label4.Location = new Point(114, 148);
+            label4.Name = "label4";
+            label4.Size = new Size(143, 28);
+            label4.Text = "New password:";
+            // 
+            // label3
+            // 
+            label3.Anchor = AnchorStyles.None;
+            label3.BackColor = Color.Transparent;
+            label3.Location = new Point(114, 85);
+            label3.Name = "label3";
+            label3.Size = new Size(136, 28);
+            label3.Text = "Old password:";
             // 
             // panelInfo
             // 
-            panelInfo.BackColor = Color.PaleTurquoise;
+            panelInfo.Anchor = AnchorStyles.None;
+            panelInfo.BackColor = SystemColors.Control;
+            panelInfo.BackgroundImage = Properties.Resources.background;
+            panelInfo.BackgroundImageLayout = ImageLayout.Stretch;
             panelInfo.Controls.Add(label7);
             panelInfo.Controls.Add(btnChangePassword);
-            panelInfo.Controls.Add(btnCancel);
+            panelInfo.Controls.Add(btnCancelInfo);
             panelInfo.Controls.Add(btnSaveInfo);
             panelInfo.Controls.Add(txtFullname);
             panelInfo.Controls.Add(txtEmail);
             panelInfo.Controls.Add(label2);
             panelInfo.Controls.Add(label1);
-            panelInfo.Location = new Point(2, 1);
-            panelInfo.Margin = new Padding(3, 2, 3, 2);
+            panelInfo.Location = new Point(0, 0);
             panelInfo.Name = "panelInfo";
-            panelInfo.Size = new Size(635, 299);
-            panelInfo.TabIndex = 1;
+            panelInfo.Size = new Size(885, 355);
+            // 
+            // label7
+            // 
+            label7.Anchor = AnchorStyles.None;
+            label7.BackColor = Color.Transparent;
+            label7.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.Location = new Point(288, 9);
+            label7.Name = "label7";
+            label7.Size = new Size(297, 46);
+            label7.Text = "Your Information";
             // 
             // btnChangePassword
             // 
-            btnChangePassword.Location = new Point(358, 191);
-            btnChangePassword.Margin = new Padding(3, 2, 3, 2);
+            btnChangePassword.Anchor = AnchorStyles.None;
+            btnChangePassword.Location = new Point(458, 268);
             btnChangePassword.Name = "btnChangePassword";
-            btnChangePassword.Size = new Size(146, 25);
-            btnChangePassword.TabIndex = 3;
+            btnChangePassword.Size = new Size(200, 40);
             btnChangePassword.Text = "Change password";
-            btnChangePassword.UseVisualStyleBackColor = true;
             btnChangePassword.Click += btnChangePassword_Click;
             // 
-            // btnCancel
+            // btnCancelInfo
             // 
-            btnCancel.Location = new Point(100, 191);
-            btnCancel.Margin = new Padding(3, 2, 3, 2);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(82, 25);
-            btnCancel.TabIndex = 5;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
-            btnCancel.Click += btnCancel_Click;
+            btnCancelInfo.Anchor = AnchorStyles.None;
+            btnCancelInfo.Location = new Point(202, 268);
+            btnCancelInfo.Name = "btnCancelInfo";
+            btnCancelInfo.Size = new Size(120, 40);
+            btnCancelInfo.Text = "Cancel";
+            btnCancelInfo.Click += btnCancel_Click;
             // 
             // btnSaveInfo
             // 
-            btnSaveInfo.Location = new Point(235, 191);
-            btnSaveInfo.Margin = new Padding(3, 2, 3, 2);
+            btnSaveInfo.Anchor = AnchorStyles.None;
+            btnSaveInfo.Location = new Point(330, 268);
             btnSaveInfo.Name = "btnSaveInfo";
-            btnSaveInfo.Size = new Size(82, 25);
-            btnSaveInfo.TabIndex = 4;
+            btnSaveInfo.Size = new Size(120, 40);
             btnSaveInfo.Text = "Save";
-            btnSaveInfo.UseVisualStyleBackColor = true;
             btnSaveInfo.Click += btnSaveInfo_Click;
             // 
             // txtFullname
             // 
-            txtFullname.Location = new Point(235, 123);
-            txtFullname.Margin = new Padding(3, 2, 3, 2);
+            txtFullname.Anchor = AnchorStyles.None;
+            txtFullname.Location = new Point(275, 182);
             txtFullname.Name = "txtFullname";
-            txtFullname.Size = new Size(190, 23);
-            txtFullname.TabIndex = 2;
+            txtFullname.Size = new Size(416, 34);
             // 
             // txtEmail
             // 
+            txtEmail.Anchor = AnchorStyles.None;
             txtEmail.BackColor = SystemColors.Window;
-            txtEmail.Location = new Point(235, 80);
-            txtEmail.Margin = new Padding(3, 2, 3, 2);
+            txtEmail.Location = new Point(275, 102);
             txtEmail.Name = "txtEmail";
             txtEmail.ReadOnly = true;
-            txtEmail.Size = new Size(190, 23);
-            txtEmail.TabIndex = 1;
+            txtEmail.Size = new Size(416, 34);
             // 
             // label2
             // 
-            label2.AutoSize = true;
+            label2.Anchor = AnchorStyles.None;
             label2.BackColor = Color.Transparent;
-            label2.Location = new Point(152, 125);
+            label2.Location = new Point(172, 185);
             label2.Name = "label2";
-            label2.Size = new Size(56, 15);
-            label2.TabIndex = 0;
-            label2.Text = "Fullname";
+            label2.Size = new Size(95, 28);
+            label2.Text = "Fullname:";
             // 
             // label1
             // 
-            label1.AutoSize = true;
+            label1.Anchor = AnchorStyles.None;
             label1.BackColor = Color.Transparent;
-            label1.Location = new Point(152, 82);
+            label1.Location = new Point(190, 105);
             label1.Name = "label1";
-            label1.Size = new Size(36, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Email";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.BackColor = Color.Transparent;
-            label6.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label6.Location = new Point(201, 16);
-            label6.Margin = new Padding(2, 0, 2, 0);
-            label6.Name = "label6";
-            label6.Size = new Size(183, 21);
-            label6.TabIndex = 4;
-            label6.Text = "Change your Password";
-            // 
-            // btnCancelPassword
-            // 
-            btnCancelPassword.Location = new Point(336, 233);
-            btnCancelPassword.Margin = new Padding(3, 2, 3, 2);
-            btnCancelPassword.Name = "btnCancelPassword";
-            btnCancelPassword.Size = new Size(82, 22);
-            btnCancelPassword.TabIndex = 2;
-            btnCancelPassword.Text = "Cancel";
-            btnCancelPassword.UseVisualStyleBackColor = true;
-            btnCancelPassword.Click += btnCancelPassword_Click;
-            // 
-            // btnConfirmPassword
-            // 
-            btnConfirmPassword.Location = new Point(163, 233);
-            btnConfirmPassword.Margin = new Padding(3, 2, 3, 2);
-            btnConfirmPassword.Name = "btnConfirmPassword";
-            btnConfirmPassword.Size = new Size(82, 22);
-            btnConfirmPassword.TabIndex = 2;
-            btnConfirmPassword.Text = "Confirm";
-            btnConfirmPassword.UseVisualStyleBackColor = true;
-            btnConfirmPassword.Click += btnConfirmPassword_Click;
-            // 
-            // txtNewPassAgain
-            // 
-            txtNewPassAgain.Location = new Point(259, 172);
-            txtNewPassAgain.Margin = new Padding(3, 2, 3, 2);
-            txtNewPassAgain.Name = "txtNewPassAgain";
-            txtNewPassAgain.Size = new Size(227, 23);
-            txtNewPassAgain.TabIndex = 1;
-            // 
-            // txtNewPass
-            // 
-            txtNewPass.Location = new Point(259, 123);
-            txtNewPass.Margin = new Padding(3, 2, 3, 2);
-            txtNewPass.Name = "txtNewPass";
-            txtNewPass.Size = new Size(227, 23);
-            txtNewPass.TabIndex = 1;
-            // 
-            // txtOldPass
-            // 
-            txtOldPass.Location = new Point(259, 73);
-            txtOldPass.Margin = new Padding(3, 2, 3, 2);
-            txtOldPass.Name = "txtOldPass";
-            txtOldPass.Size = new Size(227, 23);
-            txtOldPass.TabIndex = 1;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.BackColor = Color.Transparent;
-            label5.Location = new Point(119, 172);
-            label5.Name = "label5";
-            label5.Size = new Size(116, 15);
-            label5.TabIndex = 0;
-            label5.Text = "New password again";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.BackColor = Color.Transparent;
-            label4.Location = new Point(119, 123);
-            label4.Name = "label4";
-            label4.Size = new Size(84, 15);
-            label4.TabIndex = 0;
-            label4.Text = "New password";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.BackColor = Color.Transparent;
-            label3.Location = new Point(119, 73);
-            label3.Name = "label3";
-            label3.Size = new Size(79, 15);
-            label3.TabIndex = 0;
-            label3.Text = "Old password";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.BackColor = Color.Transparent;
-            label7.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label7.Location = new Point(259, 16);
-            label7.Margin = new Padding(2, 0, 2, 0);
-            label7.Name = "label7";
-            label7.Size = new Size(141, 21);
-            label7.TabIndex = 6;
-            label7.Text = "Your Information";
+            label1.Size = new Size(63, 28);
+            label1.Text = "Email:";
             // 
             // FormInfo
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(634, 297);
+            BackgroundImage = Properties.Resources.background;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(882, 353);
+            Controls.Add(panelInfo);
             Controls.Add(panelPassword);
-            Margin = new Padding(3, 2, 3, 2);
+            DoubleBuffered = true;
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(4);
             Name = "FormInfo";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Change Password";
+            Text = "Infomation";
             panelPassword.ResumeLayout(false);
             panelPassword.PerformLayout();
             panelInfo.ResumeLayout(false);
@@ -280,13 +265,12 @@
         private Panel panelPassword;
         private Panel panelInfo;
         private Button btnChangePassword;
-        private Button btnCancel;
         private Button btnSaveInfo;
         private TextBox txtFullname;
         private TextBox txtEmail;
         private Label label2;
         private Label label1;
-        private Button btnCancelPassword;
+        private Button btnCancelPassw;
         private Button btnConfirmPassword;
         private TextBox txtNewPassAgain;
         private TextBox txtNewPass;
@@ -296,5 +280,6 @@
         private Label label3;
         private Label label6;
         private Label label7;
+        private Button btnCancelInfo;
     }
 }

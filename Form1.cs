@@ -1,16 +1,20 @@
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Net.Security;
 
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
         public event Action RefreshFormlogin;
+
         private User _user;
         private int tabCount = 1;
 
-        private readonly HttpClient httpClient = new HttpClient(new HttpClientHandler()
+        private readonly HttpClient httpClient = new HttpClient(new SocketsHttpHandler()
         {
-            ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            SslOptions = new SslClientAuthenticationOptions
+            {
+                RemoteCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            }
         });
 
         public Form1(User user)
@@ -21,18 +25,10 @@ namespace WinFormsApp1
             adminToolStripMenuItem.Text = _user.FullName;
 
             httpClient.DefaultRequestHeaders.ExpectContinue = false;
+
             DownloadPage dp = new DownloadPage(httpClient, _user.UserId);
             dp.Location = new Point(6, 6);
             NewTab1.Controls.Add(dp);
-        }
-
-        private void btnDelTab_Click(object sender, EventArgs e)
-        {
-            if (tabControl1.SelectedTab.Text != "+")
-            {
-                TabPage tabDel = tabControl1.SelectedTab;
-                tabDel.Dispose();
-            }
         }
 
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
@@ -53,6 +49,7 @@ namespace WinFormsApp1
                 tc.SelectedTab = newTab;
             }
         }
+
         private void UpdateUser(User user)
         {
             Invoke(() =>
@@ -61,6 +58,7 @@ namespace WinFormsApp1
                 adminToolStripMenuItem.Text = _user.FullName;
             });
         }
+
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormInfo f = new FormInfo(_user);
@@ -83,6 +81,15 @@ namespace WinFormsApp1
         {
             FormHistory f = new FormHistory(_user);
             f.ShowDialog();
+        }
+
+        private void deleteTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab.Text != "+")
+            {
+                TabPage tabDel = tabControl1.SelectedTab;
+                tabDel.Dispose();
+            }
         }
     }
 }

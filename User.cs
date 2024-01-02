@@ -13,6 +13,7 @@ namespace WinFormsApp1
         public string Email { get; set; }
         [MaxLength(255), Required]
         public string FullName { get; set; }
+
         public ICollection<MyDownloadBooster> MyDownloads { get; set; }
 
         public User()
@@ -68,17 +69,14 @@ namespace WinFormsApp1
                     {
                         return false;
                     }
-                }
 
-                string code = StaticFunc.GenerateRandomString(8);
-                if (!StaticFunc.SendEmail(Email, "Password code", code))
-                {
-                    return false;
-                }
+                    string code = StaticFunc.GenerateRandomString(8);
+                    if (!StaticFunc.SendEmail(Email, "Password code", code))
+                    {
+                        return false;
+                    }
 
-                Password = StaticFunc.ComputeSha256Hash(code);
-                using (MyContext Db = new MyContext())
-                {
+                    Password = StaticFunc.ComputeSha256Hash(code);
                     Db.Users.Add(this);
                     Db.SaveChanges();
                     return true;
@@ -117,12 +115,7 @@ namespace WinFormsApp1
 
         public bool ChangePassword(string oldPass, string newPass, string newPassAgain)
         {
-            if(newPass != newPassAgain)
-            {
-                return false;
-            }
-
-            if (!StaticFunc.CheckPassword(newPass))
+            if(newPass != newPassAgain || !StaticFunc.CheckPassword(newPass))
             {
                 return false;
             }
@@ -144,7 +137,6 @@ namespace WinFormsApp1
             }
             catch
             {
-
                 return false;
             }
         }

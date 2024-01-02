@@ -2,7 +2,7 @@
 
 namespace WinFormsApp1
 {
-    public class InfoDownloading
+    public class InfoSegmentDownloading
     {
         public string FileName { get; set; }
         public long TotalBytesSegment { get; set; }

@@ -6,6 +6,7 @@ namespace WinFormsApp1
     {
         public DbSet<User> Users { get; set; }
         public DbSet<MyDownloadBooster> MyDownloadBoosters { get; set; }
+
         public MyContext()
         {
             //Database.EnsureDeleted();
@@ -14,8 +15,9 @@ namespace WinFormsApp1
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-G5TBJOJ\\SQLEXPRESS;Initial Catalog=Database_Pbl4;Integrated Security=True;Trust Server Certificate=True");
+            optionsBuilder.UseSqlServer("Data Source=C;Initial Catalog=Database_Pbl4;Integrated Security=True;Trust Server Certificate=True");
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(new User

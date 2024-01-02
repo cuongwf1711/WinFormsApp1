@@ -6,44 +6,55 @@ namespace WinFormsApp1
 {
     public class YtbParse
     {
-        public string UrlOfVideo { get; set; }
         private readonly YoutubeClient youtube = new YoutubeClient();
+
+        public string UrlOfVideo { get;  }
+
+        public YtbParse(string urlOfVideo)
+        {
+            UrlOfVideo = urlOfVideo;
+        }
+
+        private string VideoId
+        {
+            get
+            {
+                return YoutubeExplode.Videos.VideoId.Parse(UrlOfVideo);
+            }
+        }
+
         public async Task<string> GetName()
         {
             try
             {
-                var videoId = YoutubeExplode.Videos.VideoId.Parse(UrlOfVideo);
-                var video = await youtube.Videos.GetAsync(videoId);
-                string s =  Regex.Replace(video.Title, "[^a-zA-Z0-9]+", "", RegexOptions.Compiled);
-                return s.Substring(0, Math.Min(s.Length, 50));
+                YoutubeExplode.Videos.Video video = await youtube.Videos.GetAsync(VideoId);
+                string nameVideo =  Regex.Replace(video.Title, "[^a-zA-Z0-9]+", "", RegexOptions.Compiled);
+                return nameVideo.Substring(0, Math.Min(nameVideo.Length, 50));
             }
             catch
             {
                 return string.Empty;
             }
         }
-        public async Task<string> GetUrlDownloadMp4()
+
+        public async Task<string> GetUrlDownload(string extensionFile)
         {
             try
             {
-                var videoId = YoutubeExplode.Videos.VideoId.Parse(UrlOfVideo);
-                var streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoId);
-                var videoStreamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
-                return videoStreamInfo.Url;
-            }
-            catch
-            {
+                StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(VideoId);
+
+                if(extensionFile == ".mp3")
+                {
+                    YoutubeExplode.Videos.Streams.IStreamInfo audioStreamInfo = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
+                    return audioStreamInfo.Url;
+                }
+                else if(extensionFile == ".mp4")
+                {
+                    YoutubeExplode.Videos.Streams.IVideoStreamInfo videoStreamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
+                    return videoStreamInfo.Url;
+                }
+
                 return string.Empty;
-            }
-        }
-        public async Task<string> GetUrlDownloadMp3()
-        {
-            try
-            {
-                var videoId = YoutubeExplode.Videos.VideoId.Parse(UrlOfVideo);
-                var streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoId);
-                var audioStreamInfo = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
-                return audioStreamInfo.Url;
             }
             catch
             {

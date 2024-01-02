@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 
@@ -9,7 +10,9 @@ namespace WinFormsApp1
         public event Action<long> FileSizeUpdated;
 
         public int MyDownloadBoosterId { get; set; }
+        [Required]
         public string UrlFileDownload { get; set; }
+        [Required]
         public string LocalPath { get; set; }
         public int ConnectionNumber { get; set; }
         public DateTime DateTime { get; set; }
@@ -18,7 +21,7 @@ namespace WinFormsApp1
         public int UserId { get; set; }
         public User User { get; set; }
 
-        private const int bufferSize = 1024 * 128;
+        private const int bufferSize = 1024 * 80;
         private const long updateThreshold = 2 * 1024 * 1024;
 
         public bool Add()
@@ -76,7 +79,7 @@ namespace WinFormsApp1
             }
         }
 
-        private async Task<bool> DownloadSingle(IProgress<InfoDownloading> progress, HttpClient httpClient, CancellationToken token)
+        private async Task<bool> DownloadSingle(IProgress<InfoSegmentDownloading> progress, HttpClient httpClient, CancellationToken token)
         {
             using (HttpResponseMessage response = await httpClient.GetAsync(UrlFileDownload, HttpCompletionOption.ResponseHeadersRead, token))
             {
@@ -88,7 +91,7 @@ namespace WinFormsApp1
                         byte[] buffer = new byte[bufferSize];
                         int bytesRead;
 
-                        InfoDownloading infoDownloading = new InfoDownloading()
+                        InfoSegmentDownloading infoDownloading = new InfoSegmentDownloading()
                         {
                             FileName = LocalPath,
                             FileSize = FileSize,
@@ -122,7 +125,7 @@ namespace WinFormsApp1
             return true;
         }
 
-        public async Task<bool> DownloadAsync(IProgress<InfoDownloading> progress, HttpClient httpClient, CancellationToken token)
+        public async Task<bool> DownloadAsync(IProgress<InfoSegmentDownloading> progress, HttpClient httpClient, CancellationToken token)
         {
             ConcurrentDictionary<long, string> tempFilesDictionary = new ConcurrentDictionary<long, string>();
             try
@@ -131,17 +134,20 @@ namespace WinFormsApp1
                 using HttpResponseMessage responseHeader = await httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, token);
 
                 FileSize = responseHeader.Content.Headers.ContentLength.GetValueOrDefault();
-                if (FileSize <= 0)
+                if (FileSize > 0)
                 {
-                    return false;
+                    FileSizeUpdated?.Invoke(FileSize);
                 }
-                FileSizeUpdated?.Invoke(FileSize);
+                if (FileSize < ConnectionNumber)
+                {
+                    ConnectionNumber = 1;
+                }
 
                 if (!responseHeader.Headers.AcceptRanges.Contains("bytes") || ConnectionNumber == 1)
                 {
                     return await DownloadSingle(progress, httpClient, token);
                 }
-
+                
                 long totalBytesRead = 0;
                 await Parallel.ForEachAsync(GetSegmentsAsync(token), new ParallelOptions() { CancellationToken = token }, async (segment, token) =>
                 {
@@ -164,7 +170,7 @@ namespace WinFormsApp1
                                 byte[] buffer = new byte[bufferSize];
                                 int bytesRead;
 
-                                InfoDownloading infoDownloading = new InfoDownloading()
+                                InfoSegmentDownloading infoDownloading = new InfoSegmentDownloading()
                                 {
                                     FileName = Path.GetFileName(tempFilePath),
                                     FileSize = FileSize,

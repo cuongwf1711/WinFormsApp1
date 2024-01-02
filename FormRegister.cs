@@ -3,6 +3,7 @@
     public partial class FormRegister : Form
     {
         public event Action RefreshFormlogin;
+
         public FormRegister()
         {
             InitializeComponent();
