@@ -41,24 +41,24 @@
             // 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.Anchor = AnchorStyles.None;
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.BackgroundColor = SystemColors.GradientActiveCaption;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(13, 67);
+            dataGridView1.Location = new Point(12, 67);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1156, 478);
+            dataGridView1.Size = new Size(1158, 492);
             dataGridView1.CellClick += dataGridView1_CellClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.CellMouseDown += dataGridView1_CellMouseDown;
             // 
             // btnDel
             // 
-            btnDel.Anchor = AnchorStyles.None;
+            btnDel.Anchor = AnchorStyles.Top;
             btnDel.BackColor = Color.White;
-            btnDel.Location = new Point(394, 13);
+            btnDel.Location = new Point(401, 12);
             btnDel.Name = "btnDel";
             btnDel.Size = new Size(150, 40);
             btnDel.Text = "Delete";
@@ -66,18 +66,19 @@
             // 
             // labelTotal
             // 
-            labelTotal.Anchor = AnchorStyles.None;
+            labelTotal.Anchor = AnchorStyles.Bottom;
+            labelTotal.AutoSize = true;
             labelTotal.BackColor = Color.Transparent;
-            labelTotal.Location = new Point(13, 35);
+            labelTotal.Location = new Point(12, 36);
             labelTotal.Name = "labelTotal";
             labelTotal.Size = new Size(54, 28);
             labelTotal.Text = "Total";
             // 
             // btnRefresh
             // 
-            btnRefresh.Anchor = AnchorStyles.None;
+            btnRefresh.Anchor = AnchorStyles.Top;
             btnRefresh.BackColor = Color.White;
-            btnRefresh.Location = new Point(579, 13);
+            btnRefresh.Location = new Point(589, 12);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(150, 40);
             btnRefresh.Text = "Refresh";
@@ -85,9 +86,10 @@
             // 
             // labelSelected
             // 
-            labelSelected.Anchor = AnchorStyles.None;
+            labelSelected.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            labelSelected.AutoSize = true;
             labelSelected.BackColor = Color.Transparent;
-            labelSelected.Location = new Point(13, 549);
+            labelSelected.Location = new Point(12, 562);
             labelSelected.Name = "labelSelected";
             labelSelected.Size = new Size(86, 28);
             labelSelected.Text = "Selected";

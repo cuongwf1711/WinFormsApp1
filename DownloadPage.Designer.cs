@@ -44,7 +44,8 @@
             btnCancel = new Button();
             labelStatus = new Label();
             labelFileSize = new Label();
-            myProgressBar1 = new MyProgressBar();
+            progressBar1 = new ProgressBar();
+            labelPercent = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
@@ -53,7 +54,7 @@
             // 
             label1.Anchor = AnchorStyles.None;
             label1.BackColor = Color.Transparent;
-            label1.Location = new Point(45, 34);
+            label1.Location = new Point(45, 35);
             label1.Name = "label1";
             label1.Size = new Size(145, 23);
             label1.Text = "URL to download:";
@@ -65,7 +66,7 @@
             txtUrlDownload.Name = "txtUrlDownload";
             txtUrlDownload.Size = new Size(920, 30);
             txtUrlDownload.TextChanged += txtUrlDownload_TextChanged;
-            txtLocalpath.TabIndex = 0;
+            txtUrlDownload.TabIndex = 0;
             // 
             // btnDownload
             // 
@@ -81,7 +82,7 @@
             // 
             label2.Anchor = AnchorStyles.None;
             label2.BackColor = Color.Transparent;
-            label2.Location = new Point(38, 102);
+            label2.Location = new Point(38, 104);
             label2.Name = "label2";
             label2.Size = new Size(152, 23);
             label2.Text = "Local path to save:";
@@ -107,7 +108,7 @@
             // 
             label3.Anchor = AnchorStyles.None;
             label3.BackColor = Color.Transparent;
-            label3.Location = new Point(23, 174);
+            label3.Location = new Point(23, 175);
             label3.Name = "label3";
             label3.Size = new Size(167, 23);
             label3.Text = "Connection number:";
@@ -115,7 +116,7 @@
             // cbbConnectNum
             // 
             cbbConnectNum.Anchor = AnchorStyles.None;
-            cbbConnectNum.FormattingEnabled = true;
+            cbbConnectNum.DropDownStyle = ComboBoxStyle.DropDownList;
             cbbConnectNum.Location = new Point(196, 174);
             cbbConnectNum.Name = "cbbConnectNum";
             cbbConnectNum.Size = new Size(415, 31);
@@ -176,7 +177,7 @@
             btnCancel.BackColor = SystemColors.Info;
             btnCancel.Enabled = false;
             btnCancel.FlatAppearance.BorderColor = Color.FromArgb(255, 192, 192);
-            btnCancel.Location = new Point(1016, 331);
+            btnCancel.Location = new Point(1016, 330);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(100, 30);
             btnCancel.Text = "Cancel";
@@ -184,6 +185,7 @@
             // 
             // labelStatus
             // 
+            labelStatus.AutoSize = true;
             labelStatus.BackColor = Color.Transparent;
             labelStatus.Location = new Point(65, 294);
             labelStatus.Name = "labelStatus";
@@ -192,21 +194,32 @@
             // 
             // labelFileSize
             // 
+            labelFileSize.AutoSize = true;
             labelFileSize.BackColor = Color.Transparent;
             labelFileSize.Location = new Point(65, 330);
             labelFileSize.Name = "labelFileSize";
             labelFileSize.Size = new Size(89, 23);
             labelFileSize.Text = "Filesize : ...";
             // 
-            // myProgressBar1
+            // progressBar1
             // 
-            myProgressBar1.Location = new Point(65, 367);
-            myProgressBar1.Name = "myProgressBar1";
-            myProgressBar1.Size = new Size(1051, 29);
+            progressBar1.Location = new Point(65, 366);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(1051, 30);
+            // 
+            // labelPercent
+            // 
+            labelPercent.AutoSize = true;
+            labelPercent.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelPercent.Location = new Point(565, 366);
+            labelPercent.Name = "labelPercent";
+            labelPercent.Size = new Size(34, 20);
+            labelPercent.Text = "... %";
             // 
             // DownloadPage
             // 
-            Controls.Add(myProgressBar1);
+            Controls.Add(labelPercent);
+            Controls.Add(progressBar1);
             Controls.Add(btnCancel);
             Controls.Add(labelFileSize);
             Controls.Add(labelStatus);
@@ -226,7 +239,6 @@
             Size = new Size(1200, 700);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -249,6 +261,7 @@
         private Button btnCancel;
         private Label labelStatus;
         private Label labelFileSize;
-        private MyProgressBar myProgressBar1;
+        private ProgressBar progressBar1;
+        private Label labelPercent;
     }
 }

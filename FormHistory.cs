@@ -57,8 +57,8 @@ namespace WinFormsApp1
             dataGridView1.Columns["UserId"].Visible = false;
             dataGridView1.Columns["MyDownloadBoosterId"].Visible = false;
 
-            labelTotal.Text = $"total: {dataGridView1.Rows.Count}";
-            labelSelected.Text = "selected: 0";
+            labelTotal.Text = $"Total: {dataGridView1.Rows.Count}";
+            labelSelected.Text = "Selected: 0";
         }
 
         private void btnDel_Click(object sender, EventArgs e)
@@ -121,7 +121,7 @@ namespace WinFormsApp1
         {
             if (e.ColumnIndex == -1)
             {
-                labelSelected.Text = $"selected: {dataGridView1.SelectedRows.Count}";
+                labelSelected.Text = $"Selected: {dataGridView1.SelectedRows.Count}";
             }
         }
 

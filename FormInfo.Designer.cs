@@ -89,6 +89,7 @@
             btnCancelPassw.Size = new Size(120, 40);
             btnCancelPassw.Text = "Cancel";
             btnCancelPassw.Click += btnCancel_Click;
+            btnCancelPassw.TabIndex = 8;
             // 
             // btnConfirmPassword
             // 
@@ -98,6 +99,7 @@
             btnConfirmPassword.Size = new Size(120, 40);
             btnConfirmPassword.Text = "Confirm";
             btnConfirmPassword.Click += btnConfirmPassword_Click;
+            btnConfirmPassword.TabIndex = 7;
             // 
             // txtNewPassAgain
             // 
@@ -106,6 +108,7 @@
             txtNewPassAgain.Name = "txtNewPassAgain";
             txtNewPassAgain.Size = new Size(438, 34);
             txtNewPassAgain.UseSystemPasswordChar = true;
+            txtNewPassAgain.TabIndex = 6;
             // 
             // txtNewPass
             // 
@@ -114,6 +117,7 @@
             txtNewPass.Name = "txtNewPass";
             txtNewPass.Size = new Size(438, 34);
             txtNewPass.UseSystemPasswordChar = true;
+            txtNewPass.TabIndex = 5;
             // 
             // txtOldPass
             // 
@@ -122,6 +126,7 @@
             txtOldPass.Name = "txtOldPass";
             txtOldPass.Size = new Size(438, 34);
             txtOldPass.UseSystemPasswordChar = true;
+            txtOldPass.TabIndex = 4;
             // 
             // label5
             // 
@@ -186,6 +191,7 @@
             btnChangePassword.Size = new Size(200, 40);
             btnChangePassword.Text = "Change password";
             btnChangePassword.Click += btnChangePassword_Click;
+            btnChangePassword.TabIndex = 3;
             // 
             // btnCancelInfo
             // 
@@ -195,6 +201,7 @@
             btnCancelInfo.Size = new Size(120, 40);
             btnCancelInfo.Text = "Cancel";
             btnCancelInfo.Click += btnCancel_Click;
+            btnCancelInfo.TabIndex = 2;
             // 
             // btnSaveInfo
             // 
@@ -204,6 +211,7 @@
             btnSaveInfo.Size = new Size(120, 40);
             btnSaveInfo.Text = "Save";
             btnSaveInfo.Click += btnSaveInfo_Click;
+            btnSaveInfo.TabIndex = 1;
             // 
             // txtFullname
             // 
@@ -211,6 +219,7 @@
             txtFullname.Location = new Point(275, 182);
             txtFullname.Name = "txtFullname";
             txtFullname.Size = new Size(416, 34);
+            txtFullname.TabIndex = 0;
             // 
             // txtEmail
             // 
@@ -249,7 +258,6 @@
             DoubleBuffered = true;
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(4);
             Name = "FormInfo";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Infomation";

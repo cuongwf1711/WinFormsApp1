@@ -21,7 +21,7 @@ namespace WinFormsApp1
         public int UserId { get; set; }
         public User User { get; set; }
 
-        private const int bufferSize = 1024 * 80;
+        private const int bufferSize = 1024 * 128;
         private const long updateThreshold = 2 * 1024 * 1024;
 
         public bool Add()

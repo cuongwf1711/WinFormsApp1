@@ -73,15 +73,19 @@ namespace WinFormsApp1
                 UrlDownload = txtUrlDownload.Text;
             }
 
-            groupBox1.Enabled = false;
-            btnDownload.Enabled = false;
-            btnCancel.Enabled = true;
+            Invoke(() =>
+            {
+                groupBox1.Enabled = false;
+                btnDownload.Enabled = false;
+                btnCancel.Enabled = true;
 
-            labelStatus.Text = "Status : Downloading";
-            labelFileSize.Text = "File size : ...";
-            myProgressBar1.Value = 0;
+                labelStatus.Text = "Status1 : Downloading";
+                labelFileSize.Text = "File size1 : ...";
+                progressBar1.Value = 0;
+                labelPercent.Text = "0 %";
 
-            dataDownloading.Clear();
+                dataDownloading.Clear();
+            });
         }
 
         private void UpdateFileSize(long fileSize)
@@ -180,7 +184,7 @@ namespace WinFormsApp1
 
         private void EndDownload(MyDownloadBooster d)
         {
-            labelStatus.Text = $"Status : {d.Status}";
+            labelStatus.Text = "Status : " + (d.Status ? "Done" : "Fail");
             labelFileSize.Text = $"File size : {d.FileSize.ToString("N0")} Bytes";
 
             groupBox1.Enabled = true;
@@ -214,11 +218,16 @@ namespace WinFormsApp1
             InfoSegmentDownloading obj = dataDownloading.FirstOrDefault(p => p.FileName == infoDownloading.FileName);
             if (infoDownloading.FileName == LocalPath)
             {
-
-                if(infoDownloading.FileSize > 0) 
+                
+                if (infoDownloading.FileSize > 0) 
                 {
                     int percent = (int)Math.Round((double)infoDownloading.TotalBytesDownloaded * 100 / infoDownloading.FileSize);
-                    myProgressBar1.Value = percent;
+                    progressBar1.Value = percent;
+                    labelPercent.Text = $"{percent} %";
+                }
+                else
+                {
+                    labelPercent.Text = infoDownloading.TotalBytesDownloaded.ToString();
                 }
 
                 if (dataDownloading.Count == 0)
@@ -235,7 +244,8 @@ namespace WinFormsApp1
             else
             {
                 int percent = (int)(infoDownloading.TotalBytesDownloaded * 100 / infoDownloading.FileSize);
-                myProgressBar1.Value = percent;
+                progressBar1.Value = percent;
+                labelPercent.Text = $"{percent} %";
 
                 if (obj != null)
                 {
