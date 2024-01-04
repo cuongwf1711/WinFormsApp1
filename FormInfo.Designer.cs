@@ -87,9 +87,9 @@
             btnCancelPassw.Location = new Point(337, 282);
             btnCancelPassw.Name = "btnCancelPassw";
             btnCancelPassw.Size = new Size(120, 40);
-            btnCancelPassw.Text = "Cancel";
-            btnCancelPassw.Click += btnCancel_Click;
             btnCancelPassw.TabIndex = 8;
+            btnCancelPassw.Text = "Cancel";
+            btnCancelPassw.Click += btnCancelPassw_Click;
             // 
             // btnConfirmPassword
             // 
@@ -97,9 +97,9 @@
             btnConfirmPassword.Location = new Point(465, 282);
             btnConfirmPassword.Name = "btnConfirmPassword";
             btnConfirmPassword.Size = new Size(120, 40);
+            btnConfirmPassword.TabIndex = 7;
             btnConfirmPassword.Text = "Confirm";
             btnConfirmPassword.Click += btnConfirmPassword_Click;
-            btnConfirmPassword.TabIndex = 7;
             // 
             // txtNewPassAgain
             // 
@@ -107,8 +107,8 @@
             txtNewPassAgain.Location = new Point(288, 214);
             txtNewPassAgain.Name = "txtNewPassAgain";
             txtNewPassAgain.Size = new Size(438, 34);
-            txtNewPassAgain.UseSystemPasswordChar = true;
             txtNewPassAgain.TabIndex = 6;
+            txtNewPassAgain.UseSystemPasswordChar = true;
             // 
             // txtNewPass
             // 
@@ -116,8 +116,8 @@
             txtNewPass.Location = new Point(288, 145);
             txtNewPass.Name = "txtNewPass";
             txtNewPass.Size = new Size(438, 34);
-            txtNewPass.UseSystemPasswordChar = true;
             txtNewPass.TabIndex = 5;
+            txtNewPass.UseSystemPasswordChar = true;
             // 
             // txtOldPass
             // 
@@ -125,8 +125,8 @@
             txtOldPass.Location = new Point(288, 82);
             txtOldPass.Name = "txtOldPass";
             txtOldPass.Size = new Size(438, 34);
-            txtOldPass.UseSystemPasswordChar = true;
             txtOldPass.TabIndex = 4;
+            txtOldPass.UseSystemPasswordChar = true;
             // 
             // label5
             // 
@@ -189,9 +189,9 @@
             btnChangePassword.Location = new Point(458, 268);
             btnChangePassword.Name = "btnChangePassword";
             btnChangePassword.Size = new Size(200, 40);
+            btnChangePassword.TabIndex = 3;
             btnChangePassword.Text = "Change password";
             btnChangePassword.Click += btnChangePassword_Click;
-            btnChangePassword.TabIndex = 3;
             // 
             // btnCancelInfo
             // 
@@ -199,9 +199,9 @@
             btnCancelInfo.Location = new Point(202, 268);
             btnCancelInfo.Name = "btnCancelInfo";
             btnCancelInfo.Size = new Size(120, 40);
-            btnCancelInfo.Text = "Cancel";
-            btnCancelInfo.Click += btnCancel_Click;
             btnCancelInfo.TabIndex = 2;
+            btnCancelInfo.Text = "Cancel";
+            btnCancelInfo.Click += btnCancelInfo_Click;
             // 
             // btnSaveInfo
             // 
@@ -209,9 +209,9 @@
             btnSaveInfo.Location = new Point(330, 268);
             btnSaveInfo.Name = "btnSaveInfo";
             btnSaveInfo.Size = new Size(120, 40);
+            btnSaveInfo.TabIndex = 1;
             btnSaveInfo.Text = "Save";
             btnSaveInfo.Click += btnSaveInfo_Click;
-            btnSaveInfo.TabIndex = 1;
             // 
             // txtFullname
             // 

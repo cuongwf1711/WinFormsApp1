@@ -12,15 +12,10 @@
 
             InitializeComponent();
 
-            panelInfo.BringToFront();
+            //panelInfo.BringToFront();
 
             txtEmail.Text = _user.Email;
             txtFullname.Text = _user.FullName;
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Dispose();
         }
 
         private void btnSaveInfo_Click(object sender, EventArgs e)
@@ -58,6 +53,16 @@
             {
                 MessageBox.Show("Error");
             }
+        }
+
+        private void btnCancelPassw_Click(object sender, EventArgs e)
+        {
+            panelInfo.BringToFront();
+        }
+
+        private void btnCancelInfo_Click(object sender, EventArgs e)
+        {
+            Dispose();
         }
     }
 }

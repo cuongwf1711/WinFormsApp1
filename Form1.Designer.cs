@@ -127,7 +127,7 @@
             MainMenuStrip = menuStrip1;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Main";
+            Text = "Download Booster";
             FormClosed += Form1_FormClosed;
             tabControl1.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
