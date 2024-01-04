@@ -7,22 +7,6 @@
             InitializeComponent();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            if (txtPassword.UseSystemPasswordChar)
-            {
-                pictureBoxShow.Hide();
-                pictureBoxHide.Show();
-                txtPassword.UseSystemPasswordChar = false;
-            }
-            else
-            {
-                pictureBoxHide.Hide();
-                pictureBoxShow.Show();
-                txtPassword.UseSystemPasswordChar = true;
-            }
-        }
-
         private void RefreshTextbox()
         {
             Invoke(() =>
@@ -39,7 +23,8 @@
                 user = user.Login();
                 if (user != null)
                 {
-                    Form1 f = new Form1(user);
+                    this.Hide();
+                    Form1 f = new Form1(this, user);
                     f.RefreshFormlogin += RefreshTextbox;
                     f.ShowDialog();
                     return;
@@ -67,6 +52,22 @@
                 }
             }
             MessageBox.Show("Error");
+        }
+
+        private void pictureBoxShowHide_Click(object sender, EventArgs e)
+        {
+            if (txtPassword.UseSystemPasswordChar)
+            {
+                pictureBoxShow.Hide();
+                pictureBoxHide.Show();
+                txtPassword.UseSystemPasswordChar = false;
+            }
+            else
+            {
+                pictureBoxHide.Hide();
+                pictureBoxShow.Show();
+                txtPassword.UseSystemPasswordChar = true;
+            }
         }
     }
 }

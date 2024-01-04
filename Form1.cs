@@ -5,6 +5,7 @@ namespace WinFormsApp1
     public partial class Form1 : Form
     {
         public event Action RefreshFormlogin;
+        private readonly FormLogin _formLogin;
 
         private User _user;
         private int tabCount = 1;
@@ -17,10 +18,11 @@ namespace WinFormsApp1
             }
         });
 
-        public Form1(User user)
+        public Form1(FormLogin formLogin, User user)
         {
             InitializeComponent();
 
+            _formLogin = formLogin;
             _user = user;
             adminToolStripMenuItem.Text = _user.FullName;
 
@@ -70,6 +72,7 @@ namespace WinFormsApp1
         {
             Dispose();
             RefreshFormlogin?.Invoke();
+            _formLogin.Show();
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
