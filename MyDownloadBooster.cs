@@ -220,7 +220,6 @@ namespace WinFormsApp1
                             }
                         }
                     }
-                    File.Delete(tempFile.Value);
                 }
 
                 return true;
