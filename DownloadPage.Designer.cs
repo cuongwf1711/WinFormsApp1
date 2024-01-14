@@ -200,7 +200,7 @@
             label4.Location = new Point(474, 0);
             label4.Name = "label4";
             label4.Size = new Size(194, 81);
-            label4.Text = "label4";
+            label4.Text = "BASIC UI";
             // 
             // DownloadPage
             // 
