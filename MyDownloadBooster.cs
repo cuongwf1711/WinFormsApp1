@@ -19,10 +19,6 @@ namespace WinFormsApp1
         public bool Status { get; set; }
         public long FileSize { get; private set; }
         public int UserId { get; set; }
-        public User User { get; set; }
-
-        private const int bufferSize = 1024 * 128;
-        private const long updateThreshold = 2 * 1024 * 1024;
 
         public bool Add()
         {
@@ -79,53 +75,20 @@ namespace WinFormsApp1
             }
         }
 
-        private async Task<bool> DownloadSingle(IProgress<InfoSegmentDownloading> progress, HttpClient httpClient, CancellationToken token)
+        private async Task<bool> DownloadSingle(HttpClient httpClient, CancellationToken token)
         {
-            using (HttpResponseMessage response = await httpClient.GetAsync(UrlFileDownload, HttpCompletionOption.ResponseHeadersRead, token))
+            using (Stream stream = await httpClient.GetStreamAsync(UrlFileDownload, token))
             {
-                using (Stream stream = await response.Content.ReadAsStreamAsync(token))
+                using (FileStream outputFileStream = new FileStream(LocalPath, FileMode.Create))
                 {
-                    using (FileStream outputFileStream = new FileStream(LocalPath, FileMode.Create))
-                    {
-                        long bytesDownloadedSinceLastUpdate = 0;
-                        byte[] buffer = new byte[bufferSize];
-                        int bytesRead;
-
-                        InfoSegmentDownloading infoDownloading = new InfoSegmentDownloading()
-                        {
-                            FileName = LocalPath,
-                            FileSize = FileSize,
-                        };
-
-                        while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
-                        {
-                            infoDownloading.TotalBytesDownloaded += bytesRead;
-                            infoDownloading._bytesSegmentDownloaded += bytesRead;
-                            infoDownloading.TotalBytesSegment += bytesRead;
-
-                            bytesDownloadedSinceLastUpdate += bytesRead;
-                            if (bytesDownloadedSinceLastUpdate >= updateThreshold)
-                            {
-                                infoDownloading.Status = "Downloading";
-                                progress.Report(infoDownloading);
-                                bytesDownloadedSinceLastUpdate = 0;
-                            }
-
-                            await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
-                        }
-
-                        FileSize = infoDownloading.TotalBytesDownloaded;
-
-                        infoDownloading.Status = "Done";
-                        progress.Report(infoDownloading);
-                    }
+                    await stream.CopyToAsync(outputFileStream, token);
                 }
             }
-
             return true;
         }
 
-        public async Task<bool> DownloadAsync(IProgress<InfoSegmentDownloading> progress, HttpClient httpClient, CancellationToken token)
+
+        public async Task<bool> DownloadAsync(HttpClient httpClient, CancellationToken token)
         {
             ConcurrentDictionary<long, string> tempFilesDictionary = new ConcurrentDictionary<long, string>();
             try
@@ -145,10 +108,9 @@ namespace WinFormsApp1
 
                 if (!responseHeader.Headers.AcceptRanges.Contains("bytes") || ConnectionNumber == 1)
                 {
-                    return await DownloadSingle(progress, httpClient, token);
+                    return await DownloadSingle(httpClient, token);
                 }
                 
-                long totalBytesRead = 0;
                 await Parallel.ForEachAsync(GetSegmentsAsync(token), new ParallelOptions() { CancellationToken = token }, async (segment, token) =>
                 {
                     using HttpRequestMessage requestMessage = new HttpRequestMessage
@@ -159,52 +121,19 @@ namespace WinFormsApp1
                     };
 
                     using HttpResponseMessage responseMessage = await httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, token);
-                    if (responseMessage.IsSuccessStatusCode)
+
+                    string tempFilePath = Path.GetTempFileName();
+                    tempFilesDictionary.TryAdd(segment.Start, tempFilePath);
+
+                    using (Stream stream = await responseMessage.Content.ReadAsStreamAsync(token))
                     {
-                        string tempFilePath = Path.GetTempFileName();
-                        using (Stream stream = await responseMessage.Content.ReadAsStreamAsync(token))
+                        using (FileStream outputFileStream = new FileStream(tempFilePath, FileMode.Create))
                         {
-                            using (FileStream outputFileStream = new FileStream(tempFilePath, FileMode.Create))
-                            {
-                                long bytesDownloadedSinceLastUpdate = 0;
-                                byte[] buffer = new byte[bufferSize];
-                                int bytesRead;
-
-                                InfoSegmentDownloading infoDownloading = new InfoSegmentDownloading()
-                                {
-                                    FileName = Path.GetFileName(tempFilePath),
-                                    FileSize = FileSize,
-                                    TotalBytesSegment = segment.End - segment.Start + 1,
-                                };
-
-                                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
-                                {
-                                    Interlocked.Add(ref totalBytesRead, bytesRead);
-                                    infoDownloading.TotalBytesDownloaded = totalBytesRead;
-                                    Interlocked.Add(ref infoDownloading._bytesSegmentDownloaded, bytesRead);
-
-                                    bytesDownloadedSinceLastUpdate += bytesRead;
-                                    if (bytesDownloadedSinceLastUpdate >= updateThreshold)
-                                    {
-                                        infoDownloading.Status = "Downloading";
-                                        progress.Report(infoDownloading);
-                                        bytesDownloadedSinceLastUpdate = 0;
-                                    }
-
-                                    await outputFileStream.WriteAsync(buffer, 0, bytesRead, token);
-                                }
-
-                                infoDownloading.Status = "Done";
-                                progress.Report(infoDownloading);
-                            }
+                            await stream.CopyToAsync(outputFileStream, token);
                         }
-                        tempFilesDictionary.TryAdd(segment.Start, tempFilePath);
-                    }
-                    else
-                    {
-                        throw new Exception("Error response");
                     }
                 });
+
 
                 foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                 {
@@ -212,15 +141,11 @@ namespace WinFormsApp1
                     {
                         using (FileStream destinationStream = new FileStream(LocalPath, FileMode.Append))
                         {
-                            byte[] buffer = new byte[bufferSize];
-                            int bytesRead;
-                            while ((bytesRead = await tempFileStream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
-                            {
-                                await destinationStream.WriteAsync(buffer, 0, bytesRead, token);
-                            }
+                            await tempFileStream.CopyToAsync(destinationStream, token);
                         }
                     }
                 }
+
 
                 return true;
             }

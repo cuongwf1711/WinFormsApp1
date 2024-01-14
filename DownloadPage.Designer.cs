@@ -36,7 +36,6 @@
             btnBrowse = new Button();
             label3 = new Label();
             cbbConnectNum = new ComboBox();
-            dataGridView1 = new DataGridView();
             groupBox1 = new GroupBox();
             radioButtonYTBmp4 = new RadioButton();
             radioButtonYTBmp3 = new RadioButton();
@@ -44,9 +43,7 @@
             btnCancel = new Button();
             labelStatus = new Label();
             labelFileSize = new Label();
-            progressBar1 = new ProgressBar();
-            labelPercent = new Label();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            label4 = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -54,7 +51,7 @@
             // 
             label1.Anchor = AnchorStyles.None;
             label1.BackColor = Color.Transparent;
-            label1.Location = new Point(45, 35);
+            label1.Location = new Point(53, 125);
             label1.Name = "label1";
             label1.Size = new Size(145, 23);
             label1.Text = "URL to download:";
@@ -62,19 +59,20 @@
             // txtUrlDownload
             // 
             txtUrlDownload.Anchor = AnchorStyles.None;
-            txtUrlDownload.Location = new Point(196, 34);
+            txtUrlDownload.Location = new Point(204, 124);
             txtUrlDownload.Name = "txtUrlDownload";
             txtUrlDownload.Size = new Size(920, 30);
-            txtUrlDownload.TextChanged += txtUrlDownload_TextChanged;
             txtUrlDownload.TabIndex = 0;
+            txtUrlDownload.TextChanged += txtUrlDownload_TextChanged;
             // 
             // btnDownload
             // 
             btnDownload.Anchor = AnchorStyles.None;
             btnDownload.BackColor = SystemColors.ActiveCaption;
-            btnDownload.Location = new Point(535, 235);
+            btnDownload.Location = new Point(474, 468);
             btnDownload.Name = "btnDownload";
-            btnDownload.Size = new Size(164, 41);
+            btnDownload.Size = new Size(222, 49);
+            btnDownload.TabIndex = 1;
             btnDownload.Text = "Download";
             btnDownload.Click += btnDownload_Click;
             // 
@@ -82,7 +80,7 @@
             // 
             label2.Anchor = AnchorStyles.None;
             label2.BackColor = Color.Transparent;
-            label2.Location = new Point(38, 104);
+            label2.Location = new Point(46, 194);
             label2.Name = "label2";
             label2.Size = new Size(152, 23);
             label2.Text = "Local path to save:";
@@ -90,17 +88,17 @@
             // txtLocalpath
             // 
             txtLocalpath.Anchor = AnchorStyles.None;
-            txtLocalpath.Location = new Point(196, 103);
+            txtLocalpath.Location = new Point(204, 193);
             txtLocalpath.Name = "txtLocalpath";
-            txtLocalpath.Size = new Size(814, 30);
+            txtLocalpath.Size = new Size(787, 30);
             // 
             // btnBrowse
             // 
             btnBrowse.Anchor = AnchorStyles.None;
             btnBrowse.BackColor = SystemColors.ActiveCaption;
-            btnBrowse.Location = new Point(1016, 103);
+            btnBrowse.Location = new Point(997, 193);
             btnBrowse.Name = "btnBrowse";
-            btnBrowse.Size = new Size(100, 30);
+            btnBrowse.Size = new Size(127, 33);
             btnBrowse.Text = "Browse";
             btnBrowse.Click += btnBrowse_Click;
             // 
@@ -108,7 +106,7 @@
             // 
             label3.Anchor = AnchorStyles.None;
             label3.BackColor = Color.Transparent;
-            label3.Location = new Point(23, 175);
+            label3.Location = new Point(31, 265);
             label3.Name = "label3";
             label3.Size = new Size(167, 23);
             label3.Text = "Connection number:";
@@ -117,21 +115,9 @@
             // 
             cbbConnectNum.Anchor = AnchorStyles.None;
             cbbConnectNum.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbbConnectNum.Location = new Point(196, 174);
+            cbbConnectNum.Location = new Point(204, 264);
             cbbConnectNum.Name = "cbbConnectNum";
-            cbbConnectNum.Size = new Size(415, 31);
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.BackgroundColor = Color.White;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(65, 402);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1051, 295);
+            cbbConnectNum.Size = new Size(920, 31);
             // 
             // groupBox1
             // 
@@ -140,33 +126,36 @@
             groupBox1.Controls.Add(radioButtonYTBmp4);
             groupBox1.Controls.Add(radioButtonYTBmp3);
             groupBox1.Controls.Add(radioButtonNone);
-            groupBox1.Location = new Point(720, 161);
+            groupBox1.Location = new Point(31, 345);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(396, 69);
+            groupBox1.Size = new Size(1093, 101);
             groupBox1.TabStop = false;
             groupBox1.Text = "Options";
             // 
             // radioButtonYTBmp4
             // 
-            radioButtonYTBmp4.Location = new Point(243, 31);
+            radioButtonYTBmp4.AutoSize = true;
+            radioButtonYTBmp4.Location = new Point(870, 49);
             radioButtonYTBmp4.Name = "radioButtonYTBmp4";
-            radioButtonYTBmp4.Size = new Size(133, 27);
+            radioButtonYTBmp4.Size = new Size(140, 27);
             radioButtonYTBmp4.TabStop = true;
-            radioButtonYTBmp4.Text = "Youtube mp4";
+            radioButtonYTBmp4.Text = "Youtube video";
             radioButtonYTBmp4.CheckedChanged += radioButtonYTB_CheckedChanged;
             // 
             // radioButtonYTBmp3
             // 
-            radioButtonYTBmp3.Location = new Point(95, 31);
+            radioButtonYTBmp3.AutoSize = true;
+            radioButtonYTBmp3.Location = new Point(472, 49);
             radioButtonYTBmp3.Name = "radioButtonYTBmp3";
-            radioButtonYTBmp3.Size = new Size(133, 27);
+            radioButtonYTBmp3.Size = new Size(179, 27);
             radioButtonYTBmp3.TabStop = true;
-            radioButtonYTBmp3.Text = "Youtube mp3";
+            radioButtonYTBmp3.Text = "Youtube audio only";
             radioButtonYTBmp3.CheckedChanged += radioButtonYTB_CheckedChanged;
             // 
             // radioButtonNone
             // 
-            radioButtonNone.Location = new Point(7, 31);
+            radioButtonNone.AutoSize = true;
+            radioButtonNone.Location = new Point(163, 49);
             radioButtonNone.Name = "radioButtonNone";
             radioButtonNone.Size = new Size(73, 27);
             radioButtonNone.TabStop = true;
@@ -177,9 +166,9 @@
             btnCancel.BackColor = SystemColors.Info;
             btnCancel.Enabled = false;
             btnCancel.FlatAppearance.BorderColor = Color.FromArgb(255, 192, 192);
-            btnCancel.Location = new Point(1016, 330);
+            btnCancel.Location = new Point(997, 468);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(100, 30);
+            btnCancel.Size = new Size(127, 40);
             btnCancel.Text = "Cancel";
             btnCancel.Click += buttonCancel_Click;
             // 
@@ -187,44 +176,39 @@
             // 
             labelStatus.AutoSize = true;
             labelStatus.BackColor = Color.Transparent;
-            labelStatus.Location = new Point(65, 294);
+            labelStatus.Font = new Font("Segoe UI", 19.8000011F);
+            labelStatus.Location = new Point(46, 577);
             labelStatus.Name = "labelStatus";
-            labelStatus.Size = new Size(82, 23);
+            labelStatus.Size = new Size(157, 46);
             labelStatus.Text = "Status : ...";
             // 
             // labelFileSize
             // 
             labelFileSize.AutoSize = true;
             labelFileSize.BackColor = Color.Transparent;
-            labelFileSize.Location = new Point(65, 330);
+            labelFileSize.Font = new Font("Segoe UI", 19.8000011F);
+            labelFileSize.Location = new Point(46, 623);
             labelFileSize.Name = "labelFileSize";
-            labelFileSize.Size = new Size(89, 23);
+            labelFileSize.Size = new Size(172, 46);
             labelFileSize.Text = "Filesize : ...";
             // 
-            // progressBar1
+            // label4
             // 
-            progressBar1.Location = new Point(65, 366);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(1051, 30);
-            // 
-            // labelPercent
-            // 
-            labelPercent.AutoSize = true;
-            labelPercent.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelPercent.Location = new Point(565, 366);
-            labelPercent.Name = "labelPercent";
-            labelPercent.Size = new Size(34, 20);
-            labelPercent.Text = "... %";
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 36F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.ForeColor = SystemColors.Desktop;
+            label4.Location = new Point(474, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(194, 81);
+            label4.Text = "label4";
             // 
             // DownloadPage
             // 
-            Controls.Add(labelPercent);
-            Controls.Add(progressBar1);
+            Controls.Add(label4);
             Controls.Add(btnCancel);
             Controls.Add(labelFileSize);
             Controls.Add(labelStatus);
             Controls.Add(btnBrowse);
-            Controls.Add(dataGridView1);
             Controls.Add(groupBox1);
             Controls.Add(cbbConnectNum);
             Controls.Add(btnDownload);
@@ -237,8 +221,8 @@
             Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "DownloadPage";
             Size = new Size(1200, 700);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -253,7 +237,6 @@
         private Button btnBrowse;
         private Label label3;
         private ComboBox cbbConnectNum;
-        private DataGridView dataGridView1;
         private GroupBox groupBox1;
         private RadioButton radioButtonYTBmp4;
         private RadioButton radioButtonYTBmp3;
@@ -261,7 +244,6 @@
         private Button btnCancel;
         private Label labelStatus;
         private Label labelFileSize;
-        private ProgressBar progressBar1;
-        private Label labelPercent;
+        private Label label4;
     }
 }

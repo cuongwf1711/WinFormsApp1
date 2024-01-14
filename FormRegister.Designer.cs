@@ -104,8 +104,6 @@
             // 
             // FormRegister
             // 
-            BackgroundImage = Properties.Resources.background;
-            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(882, 353);
             Controls.Add(label2);
             Controls.Add(btnCancel);

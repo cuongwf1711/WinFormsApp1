@@ -1,4 +1,5 @@
 using System.Net.Security;
+using YoutubeExplode;
 
 namespace WinFormsApp1
 {
@@ -17,6 +18,7 @@ namespace WinFormsApp1
                 RemoteCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
             }
         });
+        private readonly YoutubeClient youtubeClient = new YoutubeClient();
 
         public Form1(FormLogin formLogin, User user)
         {
@@ -28,7 +30,7 @@ namespace WinFormsApp1
 
             httpClient.DefaultRequestHeaders.ExpectContinue = false;
 
-            DownloadPage dp = new DownloadPage(httpClient, _user.UserId);
+            DownloadPage dp = new DownloadPage(httpClient, _user.UserId, youtubeClient);
             dp.Location = new Point(6, 6);
             NewTab1.Controls.Add(dp);
         }
@@ -44,7 +46,7 @@ namespace WinFormsApp1
                 newTab.UseVisualStyleBackColor = true;
                 tc.TabPages.Insert(tc.TabCount - 1, newTab);
 
-                DownloadPage dp = new DownloadPage(httpClient, _user.UserId);
+                DownloadPage dp = new DownloadPage(httpClient, _user.UserId, youtubeClient);
                 dp.Location = new Point(6, 6);
                 newTab.Controls.Add(dp);
 

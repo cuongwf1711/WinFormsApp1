@@ -84,12 +84,9 @@ namespace WinFormsApp1
         {
             try
             {
-                ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-                startInfo.FileName = path;
-                startInfo.UseShellExecute = true;
-
                 Process process = new Process();
-                process.StartInfo = startInfo;
+                process.StartInfo.FileName = path;
+                process.StartInfo.UseShellExecute = true;
                 process.Start();
 
                 return true;

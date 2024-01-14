@@ -9,7 +9,7 @@ namespace WinFormsApp1
 
         public MyContext()
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

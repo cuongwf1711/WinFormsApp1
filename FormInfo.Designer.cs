@@ -56,7 +56,6 @@
             // 
             panelPassword.Anchor = AnchorStyles.None;
             panelPassword.BackColor = SystemColors.Control;
-            panelPassword.BackgroundImage = Properties.Resources.background;
             panelPassword.BackgroundImageLayout = ImageLayout.Stretch;
             panelPassword.Controls.Add(label6);
             panelPassword.Controls.Add(btnCancelPassw);
@@ -159,7 +158,6 @@
             // 
             panelInfo.Anchor = AnchorStyles.None;
             panelInfo.BackColor = SystemColors.Control;
-            panelInfo.BackgroundImage = Properties.Resources.background;
             panelInfo.BackgroundImageLayout = ImageLayout.Stretch;
             panelInfo.Controls.Add(label7);
             panelInfo.Controls.Add(btnChangePassword);
@@ -250,8 +248,6 @@
             // 
             // FormInfo
             // 
-            BackgroundImage = Properties.Resources.background;
-            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(882, 353);
             Controls.Add(panelInfo);
             Controls.Add(panelPassword);

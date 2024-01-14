@@ -145,8 +145,6 @@
             // 
             // FormLogin
             // 
-            BackgroundImage = Properties.Resources.background;
-            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(882, 353);
             Controls.Add(pictureBoxShow);
             Controls.Add(pictureBoxHide);
