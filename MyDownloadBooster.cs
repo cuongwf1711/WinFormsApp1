@@ -64,29 +64,25 @@ namespace WinFormsApp1
 
         public async IAsyncEnumerable<Range> GetSegmentsAsync(CancellationToken token)
         {
+            long segmentSize = FileSize / ConnectionNumber;
             for (int chunk = 0; chunk < ConnectionNumber; chunk++)
             {
                 token.ThrowIfCancellationRequested();
                 yield return new Range()
                 {
-                    Start = chunk * (FileSize / ConnectionNumber),
-                    End = chunk == ConnectionNumber - 1 ? FileSize - 1 : (chunk + 1) * (FileSize / ConnectionNumber) - 1
+                    Start = chunk * segmentSize,
+                    End = chunk == ConnectionNumber - 1 ? FileSize - 1 : (chunk + 1) * segmentSize - 1
                 };
             }
         }
 
         private async Task<bool> DownloadSingle(HttpClient httpClient, CancellationToken token)
         {
-            using (Stream stream = await httpClient.GetStreamAsync(UrlFileDownload, token))
-            {
-                using (FileStream outputFileStream = new FileStream(LocalPath, FileMode.Create))
-                {
-                    await stream.CopyToAsync(outputFileStream, token);
-                }
-            }
+            using Stream stream = await httpClient.GetStreamAsync(UrlFileDownload, token);
+            using FileStream outputFileStream = new FileStream(LocalPath, FileMode.Create);
+            await stream.CopyToAsync(outputFileStream, token);
             return true;
         }
-
 
         public async Task<bool> DownloadAsync(HttpClient httpClient, CancellationToken token)
         {
@@ -125,27 +121,17 @@ namespace WinFormsApp1
                     string tempFilePath = Path.GetTempFileName();
                     tempFilesDictionary.TryAdd(segment.Start, tempFilePath);
 
-                    using (Stream stream = await responseMessage.Content.ReadAsStreamAsync(token))
-                    {
-                        using (FileStream outputFileStream = new FileStream(tempFilePath, FileMode.Create))
-                        {
-                            await stream.CopyToAsync(outputFileStream, token);
-                        }
-                    }
+                    using Stream stream = await responseMessage.Content.ReadAsStreamAsync(token);
+                    using FileStream outputFileStream = new FileStream(tempFilePath, FileMode.Create);
+                    await stream.CopyToAsync(outputFileStream, token);
                 });
 
-
+                using FileStream destinationStream = new FileStream(LocalPath, FileMode.Append);
                 foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                 {
-                    using (FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open))
-                    {
-                        using (FileStream destinationStream = new FileStream(LocalPath, FileMode.Append))
-                        {
-                            await tempFileStream.CopyToAsync(destinationStream, token);
-                        }
-                    }
+                    using FileStream tempFileStream = new FileStream(tempFile.Value, FileMode.Open);
+                    await tempFileStream.CopyToAsync(destinationStream, token);
                 }
-
 
                 return true;
             }
